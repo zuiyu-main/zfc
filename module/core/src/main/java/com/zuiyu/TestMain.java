@@ -1,7 +1,7 @@
 package com.zuiyu;
 
 import com.zuiyu.rest.RestRequest;
-import com.zuiyu.rest.action.office.Doc2Pdf;
+import com.zuiyu.rest.action.office.Word2Pdf;
 
 import java.io.File;
 
@@ -13,7 +13,9 @@ import java.io.File;
  */
 public class TestMain {
     public static void main(String[] args) throws Exception {
-        Doc2Pdf doc2Pdf = new Doc2Pdf();
-        doc2Pdf.handleRequest(new RestRequest("doc2pdf",new File("/opt/sourceFile")));
+        Word2Pdf word2Pdf = new Word2Pdf();
+        word2Pdf.handleRequest(
+                new RestRequest(Word2Pdf.DOC2PDF,
+                        new File("/Users/cxt/Downloads/tmp/zfc/aspose.xml")));
     }
 }
