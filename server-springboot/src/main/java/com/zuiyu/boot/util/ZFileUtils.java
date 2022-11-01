@@ -2,12 +2,16 @@ package com.zuiyu.boot.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 
 /**
  * @author zuiyu
@@ -15,11 +19,28 @@ import java.nio.file.Files;
  * @description
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
-public class ZFileUtils {
+@Component
+public class ZFileUtils implements DisposableBean {
     /**
      * 缓存文件地址
      */
     public static final String FILE_PATH = System.getProperty("user.dir")+File.separator+"tmp";
+    /**
+     * 源文件缓存删除标记
+     */
+    @Value("${file.cache.source.delete}")
+    private Boolean fileCacheSourceDelete;
+    /**
+     * 目标转换文件删除标记
+     */
+    @Value("${file.cache.target.delete}")
+    private Boolean fileTargetSourceDelete;
+    /**
+     * 目标文件输出路径
+     */
+    @Value("${file.output.path}")
+    private String fileOutputPath;
+
 
     public static final Logger logger = LoggerFactory.getLogger(ZFileUtils.class);
     public static File mFile2File(MultipartFile mfile) throws IOException {
@@ -56,19 +77,56 @@ public class ZFileUtils {
         }
         return FILE_PATH;
     }
+    public static void deleteTmpFile() throws IOException {
+        deleteTmpFile(FILE_PATH);
+    }
 
     /**
-     * 删除缓存文件
+     *  删除缓存文件
+     * @param path 要删除的文件夹路径或者文件路径
      * @throws IOException
      */
-    public static void deleteTmpFile() throws IOException {
-//        Files.delete(Paths.get(FILE_PATH));
+    public static void deleteTmpFile(String path) throws IOException {
         logger.warn("即将进行删除文件夹[{}]下所有文件",FILE_PATH);
+
+        Files.walkFileTree(Paths.get(path),
+                new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file,
+                                                     BasicFileAttributes attrs) throws IOException {
+                        Files.delete(file);
+                        logger.debug("文件[{}]被删除",file);
+                        return FileVisitResult.CONTINUE;
+                    }
+                    @Override
+                    public FileVisitResult postVisitDirectory(Path dir,
+                                                              IOException exc) throws IOException {
+                        Files.delete(dir);
+                        logger.debug("文件夹[{}]被删除",dir);
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                }
+        );
+
     }
     public static void main(String[] args) throws IOException {
 
 
         System.out.println();
         deleteTmpFile();
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        logger.info("ZFileUtils 开始销毁，缓存文件开始删除," +
+                "fileCacheSourceDelete [{}]:[{}]," +
+                "fileTargetSourceDelete [{}]:[{}],",FILE_PATH,fileCacheSourceDelete,fileOutputPath,fileTargetSourceDelete);
+        if (fileCacheSourceDelete){
+            deleteTmpFile();
+        }
+        if (fileTargetSourceDelete){
+            deleteTmpFile(fileOutputPath);
+        }
     }
 }

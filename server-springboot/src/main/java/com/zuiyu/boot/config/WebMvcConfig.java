@@ -1,4 +1,4 @@
-package com.zuiyu.boot.filter;
+package com.zuiyu.boot.config;
 
 import com.zuiyu.boot.factory.String2ConvertFactory;
 import org.springframework.beans.factory.annotation.Value;
