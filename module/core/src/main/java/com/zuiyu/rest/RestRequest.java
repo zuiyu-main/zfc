@@ -6,26 +6,28 @@ import java.io.File;
  * @author zuiyu
  * @date 2022/10/21
  * @description
- * @link https://github.com/zuiyu-main
+ * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 public class RestRequest {
 
-    private final String path;
-
+    /**
+     * 待处理源文件
+     */
     private final File file;
+    private final String targetFileDir;
 
 
-    public RestRequest(String path, File file) {
-        this.path = path;
+    public RestRequest(String targetFileDir,File file) {
         this.file = file;
+        this.targetFileDir = targetFileDir;
     }
 
-    public String getPath() {
-        return path;
-    }
 
     public File getFile() {
         return file;
     }
 
+    public String getTargetFileDir() {
+        return targetFileDir;
+    }
 }

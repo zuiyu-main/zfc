@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  * @author zuiyu
  * @date 2022/10/17
  * @description
- * @link https://github.com/zuiyu-main
+ * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 public class ServerHandler implements ChannelInboundHandler {
     public static final Logger log = LoggerFactory.getLogger(ServerHandler.class);

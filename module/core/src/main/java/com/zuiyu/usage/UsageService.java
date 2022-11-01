@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author zuiyu
  * @date 2022/10/21
  * @description
- * @link https://github.com/zuiyu-main
+ * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 public class UsageService {
     private final Map<String, BaseRestHandler> handlers;
@@ -36,6 +36,14 @@ public class UsageService {
             );
             throw new IllegalArgumentException(message);
         }
+    }
 
+    /**
+     * 获取具体的响应类型
+     * @param handler
+     * @return
+     */
+    public BaseRestHandler getRestHandler(String handler){
+        return handlers.get(handler);
     }
 }

@@ -12,11 +12,12 @@
     <artifactId>module</artifactId>
     <packaging>pom</packaging>
 
-    <name>module Maven Webapp</name>
+    <name>module</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
     <modules>
         <module>core</module>
+        <module>common</module>
     </modules>
 
     <properties>

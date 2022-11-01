@@ -13,22 +13,21 @@
     <packaging>war</packaging>
 
     <name>server</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.version>3.1.3.RELEASE</spring.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <spring.version>5.3.23</spring.version>
+        <slf4j.version>2.0.3</slf4j.version>
+        <netty.version>4.1.84.Final</netty.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.67.Final</version>
+            <version>${netty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

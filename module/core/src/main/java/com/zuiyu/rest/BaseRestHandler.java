@@ -1,11 +1,9 @@
 package com.zuiyu.rest;
 
-import com.zuiyu.rest.action.FileHandlerTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -13,13 +11,13 @@ import java.util.Locale;
  * @author zuiyu
  * @date 2022/10/21
  * @description
- * @link https://github.com/zuiyu-main
+ * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 public abstract class BaseRestHandler implements RestHandler{
 
     public final Logger log = LoggerFactory.getLogger(getClass());
     /**
-     * 处理名称
+     * 响应名称路径
      * @return
      */
     public abstract String getName();
@@ -58,16 +56,16 @@ public abstract class BaseRestHandler implements RestHandler{
     /**
      * 具体的执行方法
      * @param request
-     * @throws IOException
+     * @throws Exception
      */
-    public abstract void preRequest(RestRequest request) throws IOException;
+    public abstract RestChannelConsumer preRequest(RestRequest request) throws Exception;
 
 
 
 
 
     @Override
-    public final void handleRequest(RestRequest request) throws Exception {
+    public final void handleRequest(RestRequest request, RestChannel channel) throws Exception {
         log.debug("handleRequest ======> info");
         // 验证参数、校验类型是否支持
         List<String> includeType = getIncludeType();
@@ -78,6 +76,12 @@ public abstract class BaseRestHandler implements RestHandler{
         if (!contains){
             throw new IllegalArgumentException(String.format("文件类型不支持:%s",fileType));
         }
-        preRequest(request);
+        RestChannelConsumer restChannelConsumer = preRequest(request);
+        restChannelConsumer.accept(channel);
     }
+
+    @FunctionalInterface
+    protected interface RestChannelConsumer extends CheckedConsumer<RestChannel,Exception>{}
+
+
 }

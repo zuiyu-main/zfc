@@ -4,9 +4,9 @@ package com.zuiyu.rest.action;
  * @author zuiyu
  * @date 2022/10/22
  * @description
- * @link https://github.com/zuiyu-main
+ * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
-public enum FileHandlerTypeEnum {
+public enum FileTypeEnum {
 
     /**
      * word
