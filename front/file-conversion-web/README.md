@@ -72,7 +72,7 @@ http://vant3.uihtm.com/#/en-US
 https://vitejs.dev/guide/api-plugin.html#configureserver
 ```
 ### 开发问题
-* script setup 无法使用emit
+#### script setup 无法使用emit
 ```text
 <script setup>
 import {defineProps, defineEmits} from 'vue';
@@ -95,13 +95,13 @@ const emit = defineEmits(['change', 'delete','等处理方法'])
 // setup code
 </script>
 ```
-* 变量值定义
+####  变量值定义
 
 ```text
 import { ref } from 'vue'
 const input = ref('')
 ```
-* 表单值定义
+####  表单值定义
 ```text
   import { reactive } from 'vue'
   const pageData = reactive({
@@ -109,7 +109,7 @@ const input = ref('')
   })
 ```
 
-* 解决打包最大500kb问题
+####  解决打包最大500kb问题
 ```text
 build: {
         chunkSizeWarningLimit:1500,
@@ -124,7 +124,7 @@ build: {
         }
     }
 ```
-* 解决打包js文件无法引入，类型错误
+####  解决打包js文件无法引入，类型错误
 error TS7006: Parameter 'v' implicitly has an 'any' type.
 主要增加
 ```text
@@ -153,7 +153,7 @@ error TS7006: Parameter 'v' implicitly has an 'any' type.
 }
 
 ```
-* 解决打包之后，部署nginx，访问空白页面
+####  解决打包之后，部署nginx，访问空白页面
 修改router中createWebHistory为createWebHashHistory
 ```text
 import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
@@ -173,7 +173,7 @@ const router = createRouter({
 export default router
 
 ```
-* 打包部署nginx 配置
+#### 打包部署nginx 配置
 ```text
 
 user  nginx;
@@ -249,4 +249,22 @@ http {
  
 }
 
+```
+#### axios element-ui-plus el-upload
+* 使用http-request 覆盖默认请求
+```text
+<el-upload
+        :http-request="uploadFile"
+    >
+    </el-upload>
+```
+* 编写上传方法
+```text
+
+const uploadFile = (fileReqOpt) => {
+  let fd = new FormData()
+  fd.append("file",fileReqOpt.file)
+  fd.append("params","file.file")
+  testPostFile(fd)
+}
 ```

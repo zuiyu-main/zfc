@@ -11,14 +11,17 @@ const service = axios.create({
   headers: {'X-Custom-Header': 'zuiyu'}
 })
 service.defaults.headers.common['Authorization'] = "AUTH_TOKEN";
-service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+//service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 service.defaults.headers.get['Content-Type']='application/x-www-form-urlencoded'
 // 添加请求拦截器
 service.interceptors.request.use(function (req) {
   // 在发送请求之前做些什么
   // console.log( import.meta.env.MODE)
   // console.log('请求前拦截器1:',config)
-  // console.log('请求前拦截器2:',req)
+  console.log('请求前拦截器2:',req)
+  if (req.url.includes('/member/import')) {  // 导入文件设置请求头
+    req.headers['Content-Type'] = 'multipart/form-data'
+  }
   // if (config.loading) {
 
   // }

@@ -1,4 +1,5 @@
 # vue3集成axios
+## 配置基础环境
 * 安装axios
 ```text
 npm install axios
@@ -186,3 +187,50 @@ export default defineConfig({
 })
 
 ```
+## 调取后台接口
+* 编写测试api.js
+```text
+import service from '@/util/request.js'
+export const testGetMethod = () => service.get('/test/get')
+export const testGetHaveParamsMethod =
+    (params) => service.get('/test/getHaveParams',{params:params})
+
+export const testPost = (params) =>
+    service.post('/test/post',
+        params,
+        {
+            headers: {"Content-Type": "application/x-www-form-urlencoded"}
+        }
+)
+export const testPostJson =
+    (params) => service.post('/test/postJson',params)
+
+export const testPostFile =
+    (params) => service.post('/test/postFile',params,{
+        headers: {"Content-Type": "application/x-www-form-urlencoded"}
+    })
+```
+* 接口调用
+  * 组件中引入
+  ```text
+  import {testPostFile} from "@/api/api";
+  // 或者引入全部使用
+  import TestApi from "@/api/api";
+  ```
+  * 调用
+  ```text
+  const uploadFile = (fileReqOpt) => {
+  let fd = new FormData()
+  fd.append("file",fileReqOpt.file)
+  fd.append("params","自定义参数")
+  testPostFile(fd)
+  }
+  // 或者
+    async function test() {
+    let p ={
+      params: "参数1",
+      file: "file"
+    }
+    let result = await testPostFile(p);
+  }
+  ```

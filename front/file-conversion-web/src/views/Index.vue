@@ -14,15 +14,26 @@
 <script setup lang="ts">
   import Menu from '@/components/Menu.vue'
   import FileConvert from '@/views/FileConvert.vue'
-  import { ref } from 'vue'
-  import { reactive } from 'vue'
-  import { testGetHaveParamsMethod } from "@/api/api";
+  // ref 参数，reactive 表单
+  import { ref,reactive, } from 'vue'
+  import { ElMessage } from 'element-plus'
+  import {testPostFile} from "@/api/api";
 
 
   async function getConvertInfo() {
-    let result = await testGetHaveParamsMethod("testP");
+    let p ={
+      params: "参数1",
+      file: "file"
+    }
+    let result = await testPostFile(p);
     console.log('testGetHaveParamsMethod',result)
-  }  
+    if (result.status==200){
+      ElMessage({
+        message: result.statusText,
+        type: 'success',
+      })
+    }
+  }
   const doc2pdfStatus = ref(false)
   const pageData = reactive({
     title:'专注文件转换'
@@ -31,7 +42,7 @@
   const menuClick = (v: string)=>{
       pageData.title=v
       doc2pdfStatus.value=true
-      getConvertInfo()
+      // getConvertInfo()
   }
 
 
