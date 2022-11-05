@@ -110,12 +110,7 @@ public class ZFileUtils implements DisposableBean {
         );
 
     }
-    public static void main(String[] args) throws IOException {
 
-
-        System.out.println();
-        deleteTmpFile();
-    }
 
     @Override
     public void destroy() throws Exception {

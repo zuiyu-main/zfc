@@ -3,6 +3,9 @@
 import axios from "axios";
 // import router from  "@/router";
 import  {config}  from "@/config/index.ts";
+import { ElLoading } from 'element-plus'
+import {  nextTick } from 'vue'
+
 const service = axios.create({
   // baseURL 需要设置为反向代理前缀，不能设置绝对路径URL
   baseURL: config.baseUrl, 
@@ -14,14 +17,14 @@ service.defaults.headers.common['Authorization'] = "AUTH_TOKEN";
 //service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 service.defaults.headers.get['Content-Type']='application/x-www-form-urlencoded'
 // 添加请求拦截器
+let loadingInstance;
 service.interceptors.request.use(function (req) {
   // 在发送请求之前做些什么
   // console.log( import.meta.env.MODE)
   // console.log('请求前拦截器1:',config)
   console.log('请求前拦截器2:',req)
-  if (req.url.includes('/member/import')) {  // 导入文件设置请求头
-    req.headers['Content-Type'] = 'multipart/form-data'
-  }
+  loadingInstance = ElLoading.service({fullscreen:false,text:"正在加载..."})
+
   // if (config.loading) {
 
   // }
@@ -33,12 +36,18 @@ service.interceptors.request.use(function (req) {
 //添加响应拦截器
 service.interceptors.response.use(function (response) {
   // 对响应数据做点什么
+  nextTick(() => {
+    // Loading should be closed asynchronously
+    console.log('响应loading')
+    loadingInstance.close()
+  })
   const res = response.data;
     if (res.code !== 200) {
       // token 过期
-      if (res.code === 401)
+      if (res.code === 401){
         // 警告提示窗
         return;
+      }
       if (res.code == 403) {
         return;
       }

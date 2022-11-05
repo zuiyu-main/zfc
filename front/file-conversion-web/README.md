@@ -268,3 +268,8 @@ const uploadFile = (fileReqOpt) => {
   testPostFile(fd)
 }
 ```
+
+#### nextTick 无法使用
+```text
+import {  nextTick } from 'vue'
+```

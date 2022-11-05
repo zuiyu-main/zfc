@@ -29,8 +29,8 @@ public abstract class AbstractWordAction extends BaseRestHandler {
         String targetFileDir = request.getTargetFileDir();
         File file = new File(targetFileDir);
         if (!file.exists()){
-            log.warn("转换文件输出位置不存在，默认创建[{}]",targetFileDir);
-            file.mkdirs();
+            boolean mkdirs = file.mkdirs();
+            log.warn("缓存文件夹[{}]不存在，默认创建[{}]",targetFileDir,mkdirs);
         }
         String outputPath;
         if (targetFileDir.endsWith("/")){
@@ -41,7 +41,9 @@ public abstract class AbstractWordAction extends BaseRestHandler {
 
         File f1 = new File(outputPath);
         if (!f1.exists()){
-            f1.mkdir();
+            boolean mkdir = f1.mkdir();
+            log.warn("缓存文件夹[{}]不存在，默认创建[{}]",outputPath,mkdir);
+
         }
         String name = request.getFile().getName();
         String filename = name.substring(0, name.lastIndexOf("."));

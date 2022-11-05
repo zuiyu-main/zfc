@@ -1,6 +1,7 @@
 package com.zuiyu.boot.controller;
 
 import com.zuiyu.response.HttpResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,9 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/test")
 public class TestController {
+    @Value("${file.output.host}")
+    private String outputFileHost;
 
     @GetMapping("/get")
     public HttpResponse<String> get(){
+        System.out.println(outputFileHost);
         return new HttpResponse<>("");
     }
     @GetMapping("/getHaveParams")
