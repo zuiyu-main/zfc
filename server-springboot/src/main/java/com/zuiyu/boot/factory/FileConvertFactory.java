@@ -42,6 +42,7 @@ public class FileConvertFactory {
                 return usageService.getRestHandler(fileHandlerEnum.name());
             }
         }
+
         return usageService.getRestHandler("default");
     }
 }

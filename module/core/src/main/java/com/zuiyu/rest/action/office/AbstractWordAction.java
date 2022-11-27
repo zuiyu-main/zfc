@@ -54,11 +54,11 @@ public abstract class AbstractWordAction extends BaseRestHandler {
         }else{
             targetFile = new File(outputPath+File.separator+targetFileName);
         }
-        log.debug("原文件名:{}",request.getFile().getAbsolutePath());
+        log.debug("原文件名:{}",request.getFile().getName());
         log.debug("原文件夹地址:{}",request.getFile().getAbsolutePath());
         log.debug("目标文件名:{}",targetFileName);
         log.debug("目标文件地址:{}",targetFile.getAbsolutePath());
-        log.info("source file [{}],target file [{}]",file.getAbsolutePath(),targetFile.getAbsolutePath());
+        log.info("source file [{}],target file [{}]",request.getFile().getAbsolutePath(),targetFile.getAbsolutePath());
         return doRequest(request);
     }
 

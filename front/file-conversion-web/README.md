@@ -273,3 +273,54 @@ const uploadFile = (fileReqOpt) => {
 ```text
 import {  nextTick } from 'vue'
 ```
+
+#### setup 函数中使用router
+```text
+import { useRouter } from "vue-router";
+const thisUsrRouter = useRouter()
+const goBack = ()=>{
+   thisUsrRouter.push("/")
+}
+```
+
+#### el-upload 文件删除
+* 定义refs
+```text
+import { getCurrentInstance } from 'vue'
+const {proxy} = getCurrentInstance()
+```
+* 定义ref
+```text
+ <el-upload
+        ref="upload"
+        :on-remove="handleRemove"
+    >
+```
+* 指定删除方法
+```text
+   proxy.$refs.upload.handleRemove(要删除的文件)
+```
+
+#### 使用stores计算属性绑定组件值
+```text
+import { reactive } from 'vue'
+export const convertPageData = reactive({
+  title: "专注文件转换",
+  accept:".txt",
+  setTitle(v) {
+    this.title = v
+  },
+  setAccept(v) {
+    this.accept = v
+  }
+})
+```
+
+* 使用
+```text
+    convertPageData.setTitle("")
+    convertPageData.setAccept("")
+    //
+    convertPageData.title
+    convertPageData.accept
+```

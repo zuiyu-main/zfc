@@ -1,10 +1,15 @@
 <template>
-  <div class="common-layout">
+  <div class="common-layout" >
     <el-container >
       <el-aside class="aside" ><Menu @menu-click="menuClick"/></el-aside>
       <el-container>
-        <el-header class="header">{{pageData.title}}</el-header>
-        <el-main class="main"><FileConvert v-if="doc2pdfStatus"/></el-main>
+<!--        <el-header class="header">{{pageData.title}}</el-header>-->
+        <el-main class="main">
+          <FileConvert v-if="doc2pdfStatus"
+                       @go-back="goBack"
+          />
+          <div v-else>最方便的文件转换工具</div>
+        </el-main>
         <el-footer class="footer">公众号:醉鱼Java </el-footer>
       </el-container>
     </el-container>
@@ -13,38 +18,41 @@
 
 <script setup lang="ts">
   import Menu from '@/components/Menu.vue'
-  import FileConvert from '@/views/FileConvert.vue'
+  import FileConvert from '@/components/convert/FileConvert.vue'
   // ref 参数，reactive 表单
-  import { ref,reactive, } from 'vue'
+  import { ref,reactive} from 'vue'
   import { ElMessage } from 'element-plus'
-  import {testPostFile} from "@/api/api";
+  import {testPostFile} from "@/api/test";
+  import  {convertPageData} from '@/stores/fileConvert'
 
 
-  async function getConvertInfo() {
-    let p ={
-      params: "参数1",
-      file: "file"
-    }
-    let result = await testPostFile(p);
-    console.log('testGetHaveParamsMethod',result)
-    if (result.status==200){
-      ElMessage({
-        message: result.statusText,
-        type: 'success',
-      })
-    }
-  }
   const doc2pdfStatus = ref(false)
-  const pageData = reactive({
-    title:'专注文件转换'
-  })
-  
+
+
   const menuClick = (v: string)=>{
-      pageData.title=v
-      doc2pdfStatus.value=true
-      // getConvertInfo()
+    // 设置转换文件页面显示状态
+    doc2pdfStatus.value=true
+    // 设置当前页标题
+    convertPageData.setTitle(v)
+    convertPageData.setAccept(getFileType(v))
+    convertPageData.setFileList([])
+    // getConvertInfo()
+
   }
 
+  const  getFileType = (v)=>{
+    if (v==='DOC2PDF'){
+      return ".doc,.docx,.txt,.xml"
+    }else if (v==='PDF2DOC'){
+      return ".pdf"
+    }else{
+      return ""
+    }
+  }
+
+  const goBack = ()=>{
+    doc2pdfStatus.value=false
+  }
 
 </script>
 <style scoped>
@@ -58,9 +66,9 @@
   }
   .el-header, .el-footer {
     background-color: #EAEEF3;
-    /*color: #589EF8;*/
     text-align: center;
     line-height: 60px;
+    font-weight: 500;
   }
 .common-layout{
   width: 100%;
@@ -93,4 +101,11 @@
     line-height: 320px;
   }
 
+  .el-main{
+    background: url('../assets/bg.jpg') no-repeat fixed center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+
+  }
 </style>

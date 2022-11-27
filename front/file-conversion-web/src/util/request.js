@@ -3,7 +3,7 @@
 import axios from "axios";
 // import router from  "@/router";
 import  {config}  from "@/config/index.ts";
-import { ElLoading } from 'element-plus'
+import { ElLoading,ElMessage } from 'element-plus'
 import {  nextTick } from 'vue'
 
 const service = axios.create({
@@ -19,43 +19,41 @@ service.defaults.headers.get['Content-Type']='application/x-www-form-urlencoded'
 // 添加请求拦截器
 let loadingInstance;
 service.interceptors.request.use(function (req) {
-  // 在发送请求之前做些什么
-  // console.log( import.meta.env.MODE)
-  // console.log('请求前拦截器1:',config)
-  console.log('请求前拦截器2:',req)
   loadingInstance = ElLoading.service({fullscreen:false,text:"正在加载..."})
-
-  // if (config.loading) {
-
-  // }
   return req;
 }, function (error) {
-  // 对请求错误做些什么
+  nextTick(() => {
+    loadingInstance.close()
+  })
   return Promise.reject(error);
 });
 //添加响应拦截器
 service.interceptors.response.use(function (response) {
-  // 对响应数据做点什么
   nextTick(() => {
-    // Loading should be closed asynchronously
-    console.log('响应loading')
     loadingInstance.close()
   })
+  console.log('成功响应：',JSON.stringify(response))
   const res = response.data;
     if (res.code !== 200) {
       // token 过期
       if (res.code === 401){
         // 警告提示窗
+        ElMessage.error('授权已过期')
         return;
       }
-      if (res.code == 403) {
-        return;
-      }
-      // 若后台返回错误值，此处返回对应错误对象，下面 error 就会接收
-      return Promise.reject(new Error(res.msg || "Error"));
+      ElMessage.error(res.msg)
+      // return Promise.resolve(res);
+      return response;
+      // return Promise.reject(new Error(res.msg || "Error"));
     }
-    return response;
+
+  return response;
+
 }, function (error) {
+  nextTick(() => {
+    loadingInstance.close()
+  })
+  console.log('失败响应：',JSON.stringify(error))
   // 对响应错误做点什么
   if (error && error.response) {
     switch (error.response.status) {
@@ -99,9 +97,13 @@ service.interceptors.response.use(function (response) {
         error.message = `连接错误: ${error.message}`
     }
   } else {
-    if (error.message == "Network Error") error.message == "网络异常，请检查后重试！"
-    error.message = "连接到服务器失败，请联系管理员"
+    if (error.code === "ERR_NETWORK") {
+      error.message = "网络异常，请检查后重试！"
+    }else{
+      error.message = "服务器链接失败，请联系管理员!"
+    }
   }
+  ElMessage.error(error.message)
   return Promise.reject(error);
 });
 

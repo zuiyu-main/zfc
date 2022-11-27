@@ -20,8 +20,15 @@ public class ConvertController {
 
     @Resource
     private FileConvertService fileConvertService;
-    @PostMapping("/file")
-    public HttpResponse<String> file(ConvertFileParams params) throws Exception {
+
+    /**
+     * 输入待转换文件接口
+     * @param params type {@link com.zuiyu.boot.module.FileHandlerEnum}
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = "/file")
+    public HttpResponse<String> file( ConvertFileParams params) throws Exception {
         return new HttpResponse<>(fileConvertService.fileConvert(params));
     }
 

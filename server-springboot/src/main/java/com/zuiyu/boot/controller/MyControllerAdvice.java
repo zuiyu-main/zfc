@@ -15,13 +15,28 @@ import java.io.IOException;
  */
 @ControllerAdvice
 public class MyControllerAdvice {
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public HttpResponse<String> illegalArgumentException(IllegalArgumentException fe){
+        HttpResponse<String> httpResponse = new HttpResponse<>();
+        httpResponse.setCode(500);
+        httpResponse.setMsg(fe.getMessage());
+        return httpResponse;
+    }
     @ExceptionHandler(IOException.class)
     @ResponseBody
     public HttpResponse<String> fileNotFound(IOException fe){
         HttpResponse<String> httpResponse = new HttpResponse<>();
         httpResponse.setCode(500);
-        httpResponse.setMsg("转换失败");
-        httpResponse.setData(fe.getMessage());
+        httpResponse.setMsg(fe.getMessage());
+        return httpResponse;
+    }
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public HttpResponse<String> exception(Exception fe){
+        HttpResponse<String> httpResponse = new HttpResponse<>();
+        httpResponse.setCode(500);
+        httpResponse.setMsg(fe.getMessage());
         return httpResponse;
     }
 }

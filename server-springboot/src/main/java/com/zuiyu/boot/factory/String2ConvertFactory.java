@@ -18,7 +18,7 @@ public class String2ConvertFactory implements ConverterFactory<String, BaseEnum>
     /**
      * 转换器
      */
-    private class String2Enum<T extends BaseEnum> implements Converter<String, T> {
+    private static class String2Enum<T extends BaseEnum> implements Converter<String, T> {
 
         private final Class<T> targetType;
 

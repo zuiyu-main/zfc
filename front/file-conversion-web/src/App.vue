@@ -61,4 +61,5 @@ import Index from './views/Index.vue'
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
   }
+
 </style>
