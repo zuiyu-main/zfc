@@ -3,6 +3,7 @@ package com.zuiyu.boot.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
@@ -20,11 +21,11 @@ import java.nio.file.attribute.BasicFileAttributes;
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 @Component
-public class ZFileUtils implements DisposableBean {
+public class ZFileUtils implements DisposableBean, InitializingBean {
     /**
      * 缓存文件地址
      */
-    public static final String FILE_PATH = System.getProperty("user.dir")+File.separator+"tmp";
+    public static final String FILE_PATH = System.getProperty("user.dir")+File.separator+"tmp"+File.separator;
     /**
      * 源文件缓存删除标记
      */
@@ -87,7 +88,7 @@ public class ZFileUtils implements DisposableBean {
      * @throws IOException
      */
     public static void deleteTmpFile(String path) throws IOException {
-        logger.warn("即将进行删除文件夹[{}]下所有文件",FILE_PATH);
+        logger.warn("文件夹[{}]下所有文件（包括文件夹）即将被删除",path);
 
         Files.walkFileTree(Paths.get(path),
                 new SimpleFileVisitor<Path>() {
@@ -116,12 +117,24 @@ public class ZFileUtils implements DisposableBean {
     public void destroy() throws Exception {
         logger.info("ZFileUtils 开始销毁，缓存文件开始删除," +
                 "fileCacheSourceDelete [{}]:[{}]," +
-                "fileTargetSourceDelete [{}]:[{}],",FILE_PATH,fileCacheSourceDelete,fileOutputPath,fileTargetSourceDelete);
+                "fileTargetSourceDelete [{}]:[{}],",
+                FILE_PATH,fileCacheSourceDelete,
+                fileOutputPath,fileTargetSourceDelete);
         if (fileCacheSourceDelete){
             deleteTmpFile();
         }
         if (fileTargetSourceDelete){
             deleteTmpFile(fileOutputPath);
+        }
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        logger.debug("ZFileUtils 初始化 加载缓存文件路径[{}]",FILE_PATH);
+        File f = new File(FILE_PATH);
+        if (!f.exists()){
+            boolean mkdirs = f.mkdirs();
+            logger.debug("缓存文件路径[{}]创建:[{}]",FILE_PATH,mkdirs);
         }
     }
 }

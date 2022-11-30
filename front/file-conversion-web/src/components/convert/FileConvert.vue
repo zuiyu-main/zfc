@@ -2,6 +2,7 @@
   <div >
     <el-page-header @back="goBack" :content="convertPageData.title" title="返回">
     </el-page-header>
+
     <el-upload
         ref="upload"
         :file-list="convertPageData.fileList"
@@ -15,6 +16,14 @@
         :on-error="handleError"
         :before-upload="beforeUpload"
     >
+      <el-select v-model="value" clearable placeholder="请选择文件转换方式">
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
       <el-button type="primary">点击上传待转换文件
       </el-button>
       <template #tip>
@@ -34,7 +43,26 @@ import type { UploadProps, UploadUserFile } from 'element-plus'
 import {formUploadFile} from "@/api/api.js";
 const {proxy} = getCurrentInstance()
 import  {convertPageData} from '@/stores/fileConvert'
-
+// 定义转换方式
+const value = ref('')
+const options = [
+  {
+    value: 'Aspose',
+    label: '方式1：Aspose',
+  },
+  {
+    value: 'Itext',
+    label: '方式2：Itext',
+  },
+  {
+    value: 'PDFBOX',
+    label: '方式3：PdfBox',
+  },
+  {
+    value: 'Spire',
+    label: '方式4：Spire',
+  }
+]
 // 定义接收页面传参
 const props = defineProps({
   convertPageData: {
@@ -94,7 +122,11 @@ const  beforeUpload: UploadProps['beforeUpload'] = (rawFile: UploadRawFile)=>{
 }
 const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
   return ElMessageBox.confirm(
-      `请确认是否要删除文件： ${uploadFile.name} ?`
+      `请确认是否要删除文件： ${uploadFile.name} ?`,{
+    confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+  }
   ).then(
       () => true,
       () => false
@@ -106,8 +138,10 @@ const uploadFile = async (fileReqOpt) => {
   let fd = new FormData()
   fd.append("file",fileReqOpt.file)
   fd.append("type","1")
+  fd.append("convertFileType",value.value===''?"Aspose":value.value)
   let result = await formUploadFile(fd)
   if (result.data.code === 500){
+    return
     // proxy.$refs.upload.handleRemove(fileReqOpt.file)
   }
   fileReqOpt.file.url=result.data.data
@@ -115,9 +149,6 @@ const uploadFile = async (fileReqOpt) => {
   let fl = convertPageData.fileList
   fl.push(fileReqOpt.file)
   convertPageData.setFileList(fl)
-  console.log("convertPageData.fileList",convertPageData.fileList)
-  // console.log("convertPageData.fileList2",fileList)
-  console.log("convertPageData.fileList3",fl)
 
 }
 // 关闭该页面、上传状态值到父页面

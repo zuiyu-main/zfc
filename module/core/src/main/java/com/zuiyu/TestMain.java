@@ -1,6 +1,7 @@
 package com.zuiyu;
 
 import com.zuiyu.rest.RestRequest;
+import com.zuiyu.rest.action.ConvertTypeEnum;
 import com.zuiyu.rest.action.office.Word2Pdf;
 import com.zuiyu.rest.channel.DefaultRestChannel;
 
@@ -17,7 +18,7 @@ public class TestMain {
     public static void main(String[] args) throws Exception {
         Word2Pdf word2Pdf = new Word2Pdf();
         RestRequest restRequest = new RestRequest("",
-                new File("/Users/cxt/Downloads/tmp/zfc/test-word2pdf.docx"));
+                new File("/Users/cxt/Downloads/tmp/zfc/test-word2pdf.docx"), ConvertTypeEnum.ITEXT.name());
 
 
         DefaultRestChannel defaultRestChannel = new DefaultRestChannel(restRequest);

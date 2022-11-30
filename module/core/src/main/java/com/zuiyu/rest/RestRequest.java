@@ -1,5 +1,7 @@
 package com.zuiyu.rest;
 
+import com.zuiyu.rest.action.ConvertTypeEnum;
+
 import java.io.File;
 
 /**
@@ -14,12 +16,21 @@ public class RestRequest {
      * 待处理源文件
      */
     private final File file;
+    /**
+     * 输出文件地址
+     */
     private final String targetFileDir;
+    /**
+     * 转换文件方式
+     * {@link com.zuiyu.rest.action.ConvertTypeEnum}
+     */
+    private final String convertType ;
 
 
-    public RestRequest(String targetFileDir,File file) {
+    public RestRequest(String targetFileDir,File file,String convertType) {
         this.file = file;
         this.targetFileDir = targetFileDir;
+        this.convertType = convertType;
     }
 
 
@@ -29,5 +40,9 @@ public class RestRequest {
 
     public String getTargetFileDir() {
         return targetFileDir;
+    }
+
+    public String getConvertType() {
+        return convertType;
     }
 }

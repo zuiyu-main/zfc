@@ -16,7 +16,7 @@ import java.io.InputStream;
  * @description
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
-public class AsposeService {
+public class AsposeService extends BaseFileConvertService {
     public static final Logger log = LoggerFactory.getLogger(AsposeService.class);
 
 
@@ -33,7 +33,8 @@ public class AsposeService {
         return result;
     }
 
-    public static void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception{
+    @Override
+    public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception{
         if (!getLicense()) {
             return;
         }
@@ -42,10 +43,12 @@ public class AsposeService {
             long start = System.currentTimeMillis();
             Document doc = new Document(sourceFilePath);
             doc.save(os, SaveFormat.PDF);
-            log.info("WORD转PDF成功，耗时：{}{}", (System.currentTimeMillis() - start)/1000,"s");
+            log.info("Aspose WORD转PDF成功，耗时：{}{}", (System.currentTimeMillis() - start)/1000,"s");
         } catch (Exception e) {
-            log.error("WORD2PDF 失败：",e);
+            log.error("Aspose WORD2PDF 失败：",e);
             throw e;
         }
     }
+
+
 }

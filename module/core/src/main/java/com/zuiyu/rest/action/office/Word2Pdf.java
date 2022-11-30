@@ -2,15 +2,17 @@ package com.zuiyu.rest.action.office;
 
 import com.zuiyu.rest.RestRequest;
 import com.zuiyu.rest.RestStatus;
+import com.zuiyu.rest.action.ConvertTypeEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
 import com.zuiyu.rest.response.TextRestResponse;
-import com.zuiyu.service.AsposeService;
+import com.zuiyu.service.BaseFileConvertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author zuiyu
@@ -68,14 +70,21 @@ public class Word2Pdf extends AbstractWordAction {
 
 
     @Override
-    public RestChannelConsumer doRequest(RestRequest request) throws Exception {
+    public RestChannelConsumer doRequest(RestRequest request,ConvertTypeEnum convertTypeEnum) throws Exception {
         log.debug("doRequest ======> info");
         File file = request.getFile();
-        AsposeService.doc2pdf(file.getPath(),targetFile.getPath());
+        convertTypeEnum
+                .getBaseFileConvertService()
+                .doc2pdf(file.getPath(),targetFile.getPath());
+        File f = new File(targetFile.getPath());
+        if (!f.exists()){
+            int index = new Random().nextInt(4);
+            ConvertTypeEnum cte = ConvertTypeEnum.values()[index];
+            log.warn("Word2Pdf 失败，文件[{}]不存在,开启一次随机降级转换",targetFile.getPath());
+            log.warn("Word2Pdf 降级执行目标[{}=>{}]",convertTypeEnum.name(),cte.name());
+            cte.getBaseFileConvertService().doc2pdf(file.getPath(),targetFile.getPath());
+        }
         return channel->channel.response(new TextRestResponse(RestStatus.OK,targetFile.getAbsolutePath()));
-
-
-
     }
 
 }

@@ -1,4 +1,4 @@
-package com.zuiyu.boot.controller;
+package com.zuiyu.boot.exception;
 
 import com.zuiyu.response.HttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;

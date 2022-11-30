@@ -1,5 +1,6 @@
 package com.zuiyu.boot.service;
 
+import com.zuiyu.boot.exception.ConvertException;
 import com.zuiyu.boot.factory.FileConvertFactory;
 import com.zuiyu.boot.module.ConvertFileParams;
 import com.zuiyu.boot.util.ZFileUtils;
@@ -30,17 +31,22 @@ public class FileConvertService {
     @Value("${file.output.host}")
     private String outputFileHost;
     public String fileConvert(ConvertFileParams params) throws Exception {
-        logger.info("文件转换前准备,操作类型 [{}]",params.getType().name());
+        logger.info("文件转换前准备资源,操作类型 [{}]",params.getType().name());
         MultipartFile mfile = params.getFile();
         try {
             File file = ZFileUtils.mFile2File(mfile);
             BaseRestHandler restHandler = FileConvertFactory.buildRestHandler(params.getType());
-            RestRequest restRequest = new RestRequest(outputDir,file);
+            RestRequest restRequest = new RestRequest(outputDir,file,params.getConvertFileType());
             DefaultRestChannel defaultRestChannel = new DefaultRestChannel(restRequest);
             restHandler.handleRequest(restRequest,defaultRestChannel);
+            String filePath = defaultRestChannel.content;
+            File f= new File(filePath);
+            if (!f.exists()){
+                throw new ConvertException("文件转换失败，请使用其它方式重试");
+            }
             return buildResponse(defaultRestChannel.content);
         }catch (Exception e){
-            logger.error("接收文件转换失败:",e);
+            logger.error("文件转换失败:",e);
             throw e;
         }
     }

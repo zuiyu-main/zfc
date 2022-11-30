@@ -2,6 +2,7 @@ package com.zuiyu.rest.action.office;
 
 import com.zuiyu.rest.BaseRestHandler;
 import com.zuiyu.rest.RestRequest;
+import com.zuiyu.rest.action.ConvertTypeEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public abstract class AbstractWordAction extends BaseRestHandler {
     public File targetFile;
 
     @Override
-    public final RestChannelConsumer preRequest(RestRequest request) throws Exception {
+    public final RestChannelConsumer preRequest(RestRequest request, ConvertTypeEnum convertTypeEnum) throws Exception {
 
         log.debug("preRequest ======> info");
         String targetFileDir = request.getTargetFileDir();
@@ -55,13 +56,13 @@ public abstract class AbstractWordAction extends BaseRestHandler {
             targetFile = new File(outputPath+File.separator+targetFileName);
         }
         log.debug("原文件名:{}",request.getFile().getName());
-        log.debug("原文件夹地址:{}",request.getFile().getAbsolutePath());
+        log.debug("原文件地址:{}",request.getFile().getAbsolutePath());
         log.debug("目标文件名:{}",targetFileName);
         log.debug("目标文件地址:{}",targetFile.getAbsolutePath());
-        log.info("source file [{}],target file [{}]",request.getFile().getAbsolutePath(),targetFile.getAbsolutePath());
-        return doRequest(request);
+        log.info("source [{}],target [{}]",request.getFile().getAbsolutePath(),targetFile.getAbsolutePath());
+        return doRequest(request,convertTypeEnum);
     }
 
-    public abstract RestChannelConsumer doRequest(RestRequest request) throws Exception;
+    public abstract RestChannelConsumer doRequest(RestRequest request,ConvertTypeEnum convertTypeEnum) throws Exception;
 
 }

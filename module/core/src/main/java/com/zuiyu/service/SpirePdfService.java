@@ -6,5 +6,5 @@ package com.zuiyu.service;
  * @description
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
-public class SpirePdfService {
+public class SpirePdfService extends BaseFileConvertService{
 }
