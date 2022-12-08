@@ -1,10 +1,8 @@
-
-
 import axios from "axios";
 // import router from  "@/router";
-import  {config}  from "@/config/index.ts";
-import { ElLoading,ElMessage } from 'element-plus'
-import {  nextTick } from 'vue'
+import {config} from "@/config/index.ts";
+import {ElLoading, ElMessage} from 'element-plus'
+import {nextTick} from 'vue'
 
 const service = axios.create({
   // baseURL 需要设置为反向代理前缀，不能设置绝对路径URL

@@ -5,7 +5,6 @@ import com.zuiyu.rest.RestStatus;
 import com.zuiyu.rest.action.ConvertTypeEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
 import com.zuiyu.rest.response.TextRestResponse;
-import com.zuiyu.service.BaseFileConvertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

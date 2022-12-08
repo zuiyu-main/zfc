@@ -1,5 +1,7 @@
 package com.zuiyu.service;
 
+import java.util.List;
+
 /**
  * @author zuiyu
  * @date 2022/11/28
@@ -8,6 +10,10 @@ package com.zuiyu.service;
  */
 public class BaseFileConvertService {
 
+
+    public List<String> getIncludeType(){
+        return null;
+    };
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
 
 

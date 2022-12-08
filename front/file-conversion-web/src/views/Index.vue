@@ -17,16 +17,14 @@
 </template>
 
 <script setup lang="ts">
-  import Menu from '@/components/Menu.vue'
-  import FileConvert from '@/components/convert/FileConvert.vue'
-  // ref 参数，reactive 表单
-  import { ref,reactive} from 'vue'
-  import { ElMessage } from 'element-plus'
-  import {testPostFile} from "@/api/test";
-  import  {convertPageData} from '@/stores/fileConvert'
+import Menu from '@/components/Menu.vue'
+import FileConvert from '@/components/convert/FileConvert.vue'
+// ref 参数，reactive 表单
+import {ref} from 'vue'
+import {convertPageData} from '@/stores/fileConvert'
 
 
-  const doc2pdfStatus = ref(false)
+const doc2pdfStatus = ref(false)
 
 
   const menuClick = (v: string)=>{

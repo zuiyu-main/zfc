@@ -37,14 +37,9 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
-import {defineProps, defineEmits} from 'vue';
-import {toRefs} from 'vue';
+import {Document,} from '@element-plus/icons-vue'
+import {defineEmits, defineProps, toRefs} from 'vue';
+
 const props = defineProps({
   item: {
     type: Object,

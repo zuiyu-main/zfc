@@ -37,12 +37,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref,defineEmits,defineProps,toRefs,onMounted,getCurrentInstance } from 'vue'
-import {ElMessage, ElMessageBox,type UploadFile, type UploadFiles, type UploadRawFile} from 'element-plus'
-import type { UploadProps, UploadUserFile } from 'element-plus'
+import {defineEmits, defineProps, getCurrentInstance, onMounted, ref} from 'vue'
+import type {UploadProps} from 'element-plus'
+import {ElMessage, ElMessageBox, type UploadFile, type UploadFiles, type UploadRawFile} from 'element-plus'
 import {formUploadFile} from "@/api/api.js";
+import {convertPageData} from '@/stores/fileConvert'
+
 const {proxy} = getCurrentInstance()
-import  {convertPageData} from '@/stores/fileConvert'
 // 定义转换方式
 const value = ref('')
 const options = [

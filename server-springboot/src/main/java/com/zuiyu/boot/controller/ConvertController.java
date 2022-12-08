@@ -3,7 +3,9 @@ package com.zuiyu.boot.controller;
 import com.zuiyu.boot.module.ConvertFileParams;
 import com.zuiyu.boot.service.FileConvertService;
 import com.zuiyu.response.HttpResponse;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 

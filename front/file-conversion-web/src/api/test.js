@@ -1,4 +1,5 @@
 import service from '@/util/request.js'
+
 export const testGetMethod = () => service.get('/test/get')
 export const testGetHaveParamsMethod =
     (params) => service.get('/test/getHaveParams',{params:params})

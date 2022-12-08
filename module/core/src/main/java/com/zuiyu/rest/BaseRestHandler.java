@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * @author zuiyu
@@ -78,12 +77,20 @@ public abstract class BaseRestHandler implements RestHandler{
         if (!contains){
             throw new IllegalArgumentException(String.format("文件类型不支持:%s",fileType));
         }
+
         ConvertTypeEnum baseFileConvertService;
         if (null == request.getConvertType()||request.getConvertType().length()==0){
             baseFileConvertService = getBaseFileConvertService(ConvertTypeEnum.ITEXT.name());
-            log.debug("未指定转换方式，即将使用[{}]执行转换",ConvertTypeEnum.ITEXT.name());
+            log.debug("未指定转换方式,即将使用[{}]执行转换",ConvertTypeEnum.ITEXT.name());
         }else{
             baseFileConvertService = getBaseFileConvertService(request.getConvertType());
+        }
+        // 加入文件类型与转换方式的校验
+        List<String> convertSupportTypes = baseFileConvertService.getBaseFileConvertService().getIncludeType();
+        boolean convertTypeSupportContains = convertSupportTypes.contains(fileType.toUpperCase(Locale.ROOT));
+        log.debug("转换方式文件类型校验 [{}] ",convertTypeSupportContains);
+        if (!convertTypeSupportContains){
+            throw new IllegalArgumentException(String.format("[%s]转换不支持[%s]文件类型,请更换转换方式重试!!!",baseFileConvertService.name(),fileType));
         }
         RestChannelConsumer restChannelConsumer = preRequest(request,baseFileConvertService);
         restChannelConsumer.accept(channel);

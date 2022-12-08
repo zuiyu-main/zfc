@@ -1,5 +1,4 @@
-import { ref, computed,reactive } from 'vue'
-import { defineStore } from 'pinia'
+import {reactive} from 'vue'
 
 
 export const convertPageData = reactive({

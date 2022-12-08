@@ -3,12 +3,15 @@ package com.zuiyu.service;
 import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
+import com.zuiyu.rest.action.FileTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author zuiyu
@@ -19,6 +22,17 @@ import java.io.InputStream;
 public class AsposeService extends BaseFileConvertService {
     public static final Logger log = LoggerFactory.getLogger(AsposeService.class);
 
+    @Override
+    public List<String> getIncludeType() {
+        return INCLUDE_TYPE;
+    }
+
+    private static final List<String> INCLUDE_TYPE = Arrays.asList(
+            FileTypeEnum.DOC.name(),
+            FileTypeEnum.DOCX.name(),
+            FileTypeEnum.XML.name(),
+            FileTypeEnum.TXT.name()
+    );
 
     public static boolean getLicense() {
         boolean result = false;

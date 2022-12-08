@@ -4,6 +4,12 @@
 ## 功能介绍
 ### `WORD文本转换PDF`
 首次开发的功能就是文本类型转换`PDF`，本着支持常见的文本类型来开发，目前已测试（doc、docx，txt，xml）
+#### 转换方式
+- [ ] Itext
+- [x] Aspose
+- [ ] PdfBox
+- [ ] Spire
+
 ## 代码介绍
 module 所有的模块包
  - common 转换代码时通用代码

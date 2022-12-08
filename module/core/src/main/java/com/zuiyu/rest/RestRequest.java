@@ -1,7 +1,5 @@
 package com.zuiyu.rest;
 
-import com.zuiyu.rest.action.ConvertTypeEnum;
-
 import java.io.File;
 
 /**
