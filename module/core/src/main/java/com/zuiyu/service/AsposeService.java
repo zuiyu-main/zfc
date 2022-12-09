@@ -31,7 +31,12 @@ public class AsposeService extends BaseFileConvertService {
             FileTypeEnum.DOC.name(),
             FileTypeEnum.DOCX.name(),
             FileTypeEnum.XML.name(),
-            FileTypeEnum.TXT.name()
+            FileTypeEnum.TXT.name(),
+
+            FileTypeEnum.RTF.name(),
+            FileTypeEnum.HTM.name(),
+            FileTypeEnum.HTML.name(),
+            FileTypeEnum.JSON.name()
     );
 
     public static boolean getLicense() {

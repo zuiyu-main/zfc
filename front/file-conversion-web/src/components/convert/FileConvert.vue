@@ -49,7 +49,7 @@ const value = ref('')
 const options = [
   {
     value: 'Aspose',
-    label: '方式1：Aspose',
+    label: '方式1：Aspose（推荐）',
   },
   {
     value: 'Itext',
@@ -61,7 +61,7 @@ const options = [
   },
   {
     value: 'Spire',
-    label: '方式4：Spire',
+    label: '方式4：Spire（免费版）',
   }
 ]
 // 定义接收页面传参

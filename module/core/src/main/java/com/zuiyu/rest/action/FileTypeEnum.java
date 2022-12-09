@@ -15,6 +15,10 @@ public enum FileTypeEnum {
     DOCX,
     TXT,
     XML,
+    JSON,
+    RTF,
+    HTML,
+    HTM,
     /**
      * PDF 类型
      */

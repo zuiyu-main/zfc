@@ -324,3 +324,18 @@ export const convertPageData = reactive({
     convertPageData.title
     convertPageData.accept
 ```
+
+# 功能记录
+## 文件支持列表
+* index.vue
+```text
+  const  getFileType = (v)=>{
+    if (v==='DOC2PDF'){
+      return ".doc,.docx,.txt,.xml,.html,.json,.rtf"
+    }else if (v==='PDF2DOC'){
+      return ".pdf"
+    }else{
+      return ""
+    }
+  }
+```

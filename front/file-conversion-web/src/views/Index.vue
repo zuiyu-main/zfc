@@ -40,7 +40,7 @@ const doc2pdfStatus = ref(false)
 
   const  getFileType = (v)=>{
     if (v==='DOC2PDF'){
-      return ".doc,.docx,.txt,.xml"
+      return ".doc,.docx,.txt,.xml,.html,.json,.rtf"
     }else if (v==='PDF2DOC'){
       return ".pdf"
     }else{

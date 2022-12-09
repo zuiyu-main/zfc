@@ -33,7 +33,12 @@ public class Word2Pdf extends AbstractWordAction {
                 FileTypeEnum.DOC.name(),
                 FileTypeEnum.DOCX.name(),
                 FileTypeEnum.XML.name(),
-                FileTypeEnum.TXT.name());
+                FileTypeEnum.TXT.name(),
+
+                FileTypeEnum.RTF.name(),
+                FileTypeEnum.HTM.name(),
+                FileTypeEnum.HTML.name(),
+                FileTypeEnum.JSON.name());
     }
 
     @Override
