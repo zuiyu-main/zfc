@@ -16,8 +16,8 @@ public class TextRestResponse extends RestResponse {
     public RestStatus status;
 
     public TextRestResponse(RestStatus status, String content) {
-        this.status=status;
-        this.content=content;
+        this.status = status;
+        this.content = content;
     }
 
     @Override

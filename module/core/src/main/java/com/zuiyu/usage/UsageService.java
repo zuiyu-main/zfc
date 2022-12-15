@@ -1,6 +1,7 @@
 package com.zuiyu.usage;
 
 import com.zuiyu.rest.BaseRestHandler;
+import com.zuiyu.rest.action.FileHandlerEnum;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -14,13 +15,13 @@ import java.util.Objects;
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 public class UsageService {
-    private final Map<String, BaseRestHandler> handlers;
+    private final Map<FileHandlerEnum, BaseRestHandler> handlers;
 
     public UsageService() {
         this.handlers = new HashMap<>();
     }
 
-    public void addRestHandler(BaseRestHandler handler){
+    public void addRestHandler(BaseRestHandler handler) {
         Objects.requireNonNull(handler);
         if (handler.getName() == null) {
             throw new IllegalArgumentException("handler of type [" + handler.getClass().getName() + "] does not have a name");
@@ -40,10 +41,11 @@ public class UsageService {
 
     /**
      * 获取具体的响应类型
+     *
      * @param handler
      * @return
      */
-    public BaseRestHandler getRestHandler(String handler){
+    public BaseRestHandler getRestHandler(FileHandlerEnum handler) {
         return handlers.get(handler);
     }
 }

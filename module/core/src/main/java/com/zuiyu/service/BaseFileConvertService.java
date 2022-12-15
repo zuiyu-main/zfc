@@ -1,5 +1,7 @@
 package com.zuiyu.service;
 
+import com.zuiyu.rest.action.FileHandlerEnum;
+
 import java.util.List;
 
 /**
@@ -8,16 +10,14 @@ import java.util.List;
  * @description
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
-public class BaseFileConvertService {
+public interface BaseFileConvertService {
 
 
-    public List<String> getIncludeType(){
-        return null;
-    };
-    public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
+    List<String> getIncludeType(FileHandlerEnum actionNameEnum);
 
+    void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception;
 
-    }
+    void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception;
 
 
 }

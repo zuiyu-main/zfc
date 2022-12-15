@@ -7,7 +7,7 @@ package com.zuiyu.rest;
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 @FunctionalInterface
-public interface CheckedConsumer<T,E extends Exception> {
+public interface CheckedConsumer<T, E extends Exception> {
     void accept(T t) throws E;
 
 }

@@ -11,9 +11,9 @@ import com.zuiyu.rest.RestStatus;
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 public abstract class AbstractRestChannel implements RestChannel {
+    protected final RestRequest request;
     public String content;
     public RestStatus status;
-    protected final RestRequest request;
 
 
     protected AbstractRestChannel(RestRequest request) {

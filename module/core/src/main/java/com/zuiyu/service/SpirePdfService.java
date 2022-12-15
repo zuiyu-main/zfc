@@ -2,13 +2,16 @@ package com.zuiyu.service;
 
 
 import com.spire.doc.Document;
+import com.zuiyu.rest.action.FileHandlerEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zuiyu
@@ -19,39 +22,54 @@ import java.util.List;
  * https://www.e-iceblue.cn/Introduce/Free-Spire-Doc-JAVA.html
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
-public class SpirePdfService extends BaseFileConvertService{
+public class SpirePdfService implements BaseFileConvertService {
     public static final Logger log = LoggerFactory.getLogger(SpirePdfService.class);
 
-    private static final String COMPONENT_NAME="Spire.pdf.free";
+    private static final String COMPONENT_NAME = "Spire.pdf.free";
+
+
+    private static final Map<FileHandlerEnum, List<String>> INCLUDE_TYPE_MAP =
+            new HashMap<FileHandlerEnum, List<String>>() {{
+                put(FileHandlerEnum.TEXT2PDF, Arrays.asList(
+                        FileTypeEnum.DOC.name(),
+                        FileTypeEnum.DOCX.name(),
+                        FileTypeEnum.TXT.name(),
+
+                        FileTypeEnum.RTF.name(),
+                        FileTypeEnum.HTM.name(),
+                        FileTypeEnum.HTML.name(),
+                        FileTypeEnum.JSON.name()
+                ));
+
+            }};
+
 
     @Override
-    public List<String> getIncludeType() {
-        return INCLUDE_TYPE;
+    public List<String> getIncludeType(FileHandlerEnum fileHandlerEnum) {
+        log.debug("[{}] getIncludeType by [{}]",COMPONENT_NAME,fileHandlerEnum.name());
+        return INCLUDE_TYPE_MAP.get(fileHandlerEnum);
     }
 
-    private static final List<String> INCLUDE_TYPE = Arrays.asList(
-            FileTypeEnum.DOC.name(),
-            FileTypeEnum.DOCX.name(),
-            FileTypeEnum.TXT.name(),
-
-            FileTypeEnum.RTF.name(),
-            FileTypeEnum.HTM.name(),
-            FileTypeEnum.HTML.name(),
-            FileTypeEnum.JSON.name()
-    );
     @Override
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
 
-        try(FileInputStream inputStream = new FileInputStream(sourceFilePath);) {
+        try (FileInputStream inputStream = new FileInputStream(sourceFilePath);) {
             long start = System.currentTimeMillis();
             Document document = new Document();
             document.loadFromStream(inputStream, com.spire.doc.FileFormat.Auto);
             //保存为PDF
             document.saveToFile(targetFilePath);
-            log.info("{} WORD转PDF成功，耗时：{}{}",COMPONENT_NAME, (System.currentTimeMillis() - start)/1000,"s");
+            log.info("{} WORD转PDF成功，耗时：{}{}", COMPONENT_NAME, (System.currentTimeMillis() - start) / 1000, "s");
         } catch (Exception e) {
-            log.error("{} WORD2PDF 失败：",COMPONENT_NAME,e);
+            log.error("{} WORD2PDF 失败：", COMPONENT_NAME, e);
             throw e;
         }
     }
+
+    @Override
+    public void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception {
+
+    }
+
+
 }

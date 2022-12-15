@@ -1,6 +1,6 @@
 package com.zuiyu.boot.factory;
 
-import com.zuiyu.boot.module.BaseEnum;
+import com.zuiyu.rest.action.BaseEnum;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 

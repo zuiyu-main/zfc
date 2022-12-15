@@ -1,9 +1,9 @@
 package com.zuiyu.boot.factory;
 
-import com.zuiyu.boot.module.FileHandlerEnum;
 import com.zuiyu.rest.BaseRestHandler;
 import com.zuiyu.rest.RestHandler;
-import com.zuiyu.rest.action.office.Word2Pdf;
+import com.zuiyu.rest.action.FileHandlerEnum;
+import com.zuiyu.rest.action.office.Text2Pdf;
 import com.zuiyu.usage.UsageService;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class FileConvertFactory {
         // 初始化
         initUsageService = new UsageService();
         // 加载所有的handler
-        initUsageService.addRestHandler(new Word2Pdf());
+        initUsageService.addRestHandler(new Text2Pdf());
     }
     @PostConstruct
     public void postInit(){
@@ -39,10 +39,10 @@ public class FileConvertFactory {
         FileHandlerEnum[] values = FileHandlerEnum.values();
         for (FileHandlerEnum value : values) {
             if (value.getValue().equals(fileHandlerEnum.getValue())){
-                return usageService.getRestHandler(fileHandlerEnum.name());
+                return usageService.getRestHandler(fileHandlerEnum);
             }
         }
 
-        return usageService.getRestHandler("default");
+        return usageService.getRestHandler(FileHandlerEnum.TEXT2PDF);
     }
 }

@@ -15,6 +15,7 @@ public enum ConvertTypeEnum {
     SPIRE(new SpirePdfService());
 
     final private BaseFileConvertService baseFileConvertService;
+
     ConvertTypeEnum(BaseFileConvertService baseFileConvertService) {
         this.baseFileConvertService = baseFileConvertService;
     }

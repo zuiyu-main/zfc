@@ -22,10 +22,10 @@ public class RestRequest {
      * 转换文件方式
      * {@link com.zuiyu.rest.action.ConvertTypeEnum}
      */
-    private final String convertType ;
+    private final String convertType;
 
 
-    public RestRequest(String targetFileDir,File file,String convertType) {
+    public RestRequest(String targetFileDir, File file, String convertType) {
         this.file = file;
         this.targetFileDir = targetFileDir;
         this.convertType = convertType;

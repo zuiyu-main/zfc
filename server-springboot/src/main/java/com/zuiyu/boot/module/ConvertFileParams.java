@@ -1,5 +1,6 @@
 package com.zuiyu.boot.module;
 
+import com.zuiyu.rest.action.FileHandlerEnum;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

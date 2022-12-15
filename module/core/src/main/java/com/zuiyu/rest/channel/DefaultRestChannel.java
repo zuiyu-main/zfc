@@ -23,8 +23,8 @@ public class DefaultRestChannel extends AbstractRestChannel implements RestChann
 
     @Override
     public void response(RestResponse response) throws Exception {
-        log.debug("DefaultRestChannel:{}",response.content());
-        log.debug("DefaultRestChannel:{}",response.status());
+        log.debug("DefaultRestChannel:{}", response.content());
+        log.debug("DefaultRestChannel:{}", response.status());
         content = response.content();
         status = response.status();
 
