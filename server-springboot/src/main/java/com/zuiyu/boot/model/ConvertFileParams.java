@@ -1,4 +1,4 @@
-package com.zuiyu.boot.module;
+package com.zuiyu.boot.model;
 
 import com.zuiyu.rest.action.FileHandlerEnum;
 import org.springframework.web.multipart.MultipartFile;

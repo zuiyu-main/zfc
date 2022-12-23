@@ -66,6 +66,7 @@ public class AsposeService implements BaseFileConvertService {
 
     @Override
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
+        log.info("[{}] doc2pdf start ...",COMPONENT_NAME);
         if (!getLicense()) {
             return;
         }

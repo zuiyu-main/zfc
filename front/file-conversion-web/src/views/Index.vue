@@ -8,9 +8,28 @@
           <FileConvert v-if="doc2pdfStatus"
                        @go-back="goBack"
           />
-          <div v-else>最方便的文件转换工具</div>
+          <div v-else>
+            最方便的文件转换工具
+
+          </div>
+          <el-row style="justify-content: flex-end;">
+            <el-card :body-style="{ padding: '0px',width:'150px' ,height:'230px' }">
+              <img
+                  id="div1"
+                  src="@/assets/zuiyujava.jpg"
+                  class="image"
+              />
+              <div style="padding: 14px;    line-height: 10px;">
+                <span>醉鱼Java</span>
+
+                <div class="bottom">
+                  <time class="time">{{ currentDate }}</time>
+                </div>
+              </div>
+            </el-card>
+          </el-row>
         </el-main>
-        <el-footer class="footer">公众号:醉鱼Java </el-footer>
+        <el-footer class="footer">公众号:《醉鱼Java》 </el-footer>
       </el-container>
     </el-container>
   </div>
@@ -22,30 +41,40 @@ import FileConvert from '@/components/convert/FileConvert.vue'
 // ref 参数，reactive 表单
 import {ref} from 'vue'
 import {convertPageData} from '@/stores/fileConvert'
+import {getSupportType} from "@/api/api.js";
 
-
+const currentDate = ref(new Date())
 const doc2pdfStatus = ref(false)
 
 
-  const menuClick = (v: string)=>{
+  const menuClick = (v: string) => {
     // 设置转换文件页面显示状态
-    doc2pdfStatus.value=true
+    doc2pdfStatus.value = true
     // 设置当前页标题
     convertPageData.setTitle(v)
-    convertPageData.setAccept(getFileType(v))
+    getFileType(v).then(res => {
+      convertPageData.setAccept(res)
+    })
     convertPageData.setFileList([])
     // getConvertInfo()
 
   }
-
-  const  getFileType = (v)=>{
-    if (v==='DOC2PDF'){
-      return ".doc,.docx,.txt,.xml,.html,.json,.rtf"
-    }else if (v==='PDF2DOC'){
+/**
+ * 读取服务器返回的支持文件类型
+ * @param v
+ */
+  const  getFileType = async (v) => {
+    let fd = new FormData()
+    if (v === 'TEXT2PDF') {
+      fd.append("type", "1")
+    } else if (v === 'PDF2DOC') {
       return ".pdf"
-    }else{
+    } else {
       return ""
     }
+  let result = await getSupportType(fd)
+  let arr = result.data.data
+  return arr.join(",")
   }
 
   const goBack = ()=>{
@@ -105,5 +134,32 @@ const doc2pdfStatus = ref(false)
     display: flex;
     flex-direction: column;
 
+  }
+  /*推广*/
+  .time {
+    font-size: 12px;
+    color: #999;
+  }
+
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+
+  .button {
+    padding: 0;
+    min-height: auto;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+  #div1 img:hover{
+    transform: scale(1.4);
   }
 </style>

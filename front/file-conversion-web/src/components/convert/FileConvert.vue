@@ -65,19 +65,19 @@ const options = [
   }
 ]
 // 定义接收页面传参
-const props = defineProps({
-  convertPageData: {
-    type: Object,
-    default() {
-      return {
-        title: '',
-        accept:''
-      };
-    },
-    required: false
-  }
-
-});
+// const props = defineProps({
+//   convertPageData: {
+//     type: Object,
+//     default() {
+//       return {
+//         title: '',
+//         accept:''
+//       };
+//     },
+//     required: false
+//   }
+//
+// });
 // const {convertPageData} = toRefs(props);
 // let fileList = ref<UploadUserFile[]>(convertPageData.fileList)
 const emit = defineEmits(['go-back'])
@@ -85,8 +85,8 @@ const emit = defineEmits(['go-back'])
 onMounted(() => {
   //打印父组件传递的值
   // console.log(props.convertPageDataTitle, 'convertPageDataTitle')
-  // console.log(props.convertPageDataAccept, 'convertPageDataAccept')
-  console.log("convertPageData 0000.fileList",convertPageData.fileList)
+  // console.log(convertPageData.accept, 'convertPageDataAccept')
+  // console.log("convertPageData 0000.fileList",convertPageData.fileList)
 
 })
 

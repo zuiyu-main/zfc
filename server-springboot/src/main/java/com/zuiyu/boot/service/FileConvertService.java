@@ -2,7 +2,7 @@ package com.zuiyu.boot.service;
 
 import com.zuiyu.boot.exception.ConvertException;
 import com.zuiyu.boot.factory.FileConvertFactory;
-import com.zuiyu.boot.module.ConvertFileParams;
+import com.zuiyu.boot.model.ConvertFileParams;
 import com.zuiyu.boot.util.ZFileUtils;
 import com.zuiyu.rest.BaseRestHandler;
 import com.zuiyu.rest.RestRequest;
@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author zuiyu
@@ -52,5 +55,15 @@ public class FileConvertService {
     }
     public String buildResponse(String content){
         return outputFileHost+content;
+    }
+
+    public List<String> getSupportType(ConvertFileParams params) {
+        BaseRestHandler restHandler = FileConvertFactory.buildRestHandler(params.getType());
+        List<String> includeType = restHandler.getIncludeType();
+        List<String> resulList = new LinkedList<>();
+        for (String s : includeType) {
+            resulList.add("."+s.toLowerCase(Locale.ROOT));
+        }
+        return resulList;
     }
 }

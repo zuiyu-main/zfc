@@ -2,7 +2,9 @@ package com.zuiyu.service;
 
 import com.zuiyu.rest.action.FileHandlerEnum;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zuiyu
@@ -18,6 +20,25 @@ public interface BaseFileConvertService {
     void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception;
 
     void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception;
+
+    /**
+     * 获取 支持 fileHandlerEnum 的所有转换方式的并集
+     * @param fileHandlerEnum
+     * @return 所有转换方式支持的文件类型
+     */
+    static List<String> getSupportType(FileHandlerEnum fileHandlerEnum){
+        List<String> includeType1 = new AsposeService().getIncludeType(fileHandlerEnum);
+        List<String> includeType2 = new ItextService().getIncludeType(fileHandlerEnum);
+        List<String> includeType3 = new PdfBoxService().getIncludeType(fileHandlerEnum);
+        List<String> includeType4 = new SpirePdfService().getIncludeType(fileHandlerEnum);
+
+        List<String> all = new LinkedList<>();
+        all.addAll(includeType1);
+        all.addAll(includeType2);
+        all.addAll(includeType3);
+        all.addAll(includeType4);
+        return all.stream().distinct().collect(Collectors.toList());
+    }
 
 
 }

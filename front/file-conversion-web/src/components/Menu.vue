@@ -15,7 +15,7 @@
               <span>文本转PDF</span>
             </template>
             <el-menu-item-group >
-              <el-menu-item index="1-1" @click="menuClick" >DOC2PDF</el-menu-item>
+              <el-menu-item index="1-1" @click="menuClick" >TEXT2PDF</el-menu-item>
               <!-- <el-menu-item index="1-2" @click="menuClick">test</el-menu-item> -->
             </el-menu-item-group>
           </el-sub-menu>
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import {Document,} from '@element-plus/icons-vue'
+import {Document} from '@element-plus/icons-vue'
 import {defineEmits, defineProps, toRefs} from 'vue';
 
 const props = defineProps({
@@ -64,7 +64,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 const menuClick = (v) => {
   let nv = ""
   if(v.index==='1-1'){
-    nv = "DOC2PDF"
+    nv = "TEXT2PDF"
   }else {
     nv = "PDF2DOC"
   }

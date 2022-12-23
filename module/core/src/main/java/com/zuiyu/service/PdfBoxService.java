@@ -46,14 +46,14 @@ public class PdfBoxService implements BaseFileConvertService {
     }
 
     /**
-     * 近支持纯文本、英文
+     * 仅支持纯文本、英文
      * @param sourceFilePath
      * @param targetFilePath
      * @throws Exception
      */
     @Override
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
-        log.info(COMPONENT_NAME);
+        log.info("[{}] doc2pdf start ...",COMPONENT_NAME);
         PDDocument document = new PDDocument();
         PDPage pdPage = new PDPage();
         document.addPage(pdPage);

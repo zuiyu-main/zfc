@@ -6,6 +6,9 @@ import com.zuiyu.rest.action.ConvertTypeEnum;
 import com.zuiyu.rest.action.FileHandlerEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
 import com.zuiyu.rest.response.TextRestResponse;
+import com.zuiyu.service.AsposeService;
+import com.zuiyu.service.BaseFileConvertService;
+import com.zuiyu.service.ItextService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,21 +26,26 @@ import java.util.Random;
 public class Text2Pdf extends AbstractWordAction {
     public final Logger log = LoggerFactory.getLogger(getClass());
 
-
+    /**
+     * 支持text2pdf的转换方式总计数量
+     */
+    public static final Integer DEFAULT_CONVERT_TYPE_SUM = 4;
     public final List<String> include;
 
 
     public Text2Pdf() {
-        include = Arrays.asList(
-                FileTypeEnum.DOC.name(),
-                FileTypeEnum.DOCX.name(),
-                FileTypeEnum.XML.name(),
-                FileTypeEnum.TXT.name(),
+//        include = Arrays.asList(
+//                FileTypeEnum.DOC.name(),
+//                FileTypeEnum.DOCX.name(),
+//                FileTypeEnum.XML.name(),
+//                FileTypeEnum.TXT.name(),
+//
+//                FileTypeEnum.RTF.name(),
+//                FileTypeEnum.HTM.name(),
+//                FileTypeEnum.HTML.name(),
+//                FileTypeEnum.JSON.name());
+        include = BaseFileConvertService.getSupportType(FileHandlerEnum.TEXT2PDF);
 
-                FileTypeEnum.RTF.name(),
-                FileTypeEnum.HTM.name(),
-                FileTypeEnum.HTML.name(),
-                FileTypeEnum.JSON.name());
     }
 
     @Override
@@ -80,7 +88,7 @@ public class Text2Pdf extends AbstractWordAction {
                 .doc2pdf(file.getPath(), targetFile.getPath());
         File f = new File(targetFile.getPath());
         if (!f.exists()) {
-            int index = new Random().nextInt(4);
+            int index = new Random().nextInt(DEFAULT_CONVERT_TYPE_SUM);
             ConvertTypeEnum cte = ConvertTypeEnum.values()[index];
             log.warn("Word2Pdf 失败，文件[{}]不存在,开启一次随机降级转换", targetFile.getPath());
             log.warn("Word2Pdf 降级执行目标[{}=>{}]", convertTypeEnum.name(), cte.name());
