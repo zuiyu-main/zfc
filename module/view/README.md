@@ -1,0 +1,8 @@
+# 文件内容查看预览
+
+ResponseListener 通用返回结果设置
+ExcelReaderUtil excel 文件读取工具
+ExcelResponseListener 读取内容自定义回调
+ExcelXlsReader xls 类型文件读取
+ExcelXlsxReaderWithDefaultHandler xlsx 文件读取，传入ExcelResponseListener可获取返回结果；
+ExcelXlsxReaderWithSheetContentsHandler 设置handler获取详细返回结果

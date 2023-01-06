@@ -29,7 +29,7 @@
             </el-card>
           </el-row>
         </el-main>
-        <el-footer class="footer">公众号:《醉鱼Java》 </el-footer>
+<!--        <el-footer class="footer">公众号:《醉鱼Java》 </el-footer>-->
       </el-container>
     </el-container>
   </div>

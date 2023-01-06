@@ -81,7 +81,7 @@
         </repository>
     </repositories>
     <build>
-        <finalName>rest</finalName>
+        <finalName>core</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>
