@@ -20,3 +20,12 @@ module 所有的模块包
    - response 响应返回信息封装类型
 
 
+备忘录
+1、求合集（总的支持转换方式=各个转换方式的合并）
+2、前段提醒信息改为确认关闭，提示支持的转换文件类型
+```mermaid
+graph TD
+A(RestHandler) --> B(BaseRestHandler)
+B(BaseRestHandler) --> C(AbstractWordAction)
+C(AbstractWordAction) --> D(Word2Pdf)
+```

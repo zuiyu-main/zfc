@@ -69,8 +69,8 @@ public class ExcelTest {
 
     @Test
     public void readExcel() throws Exception {
-        		String path="/Users/cxt/Downloads/tmp/poi/test97-2003xlsx.xlsx";
-//        String path="/Users/cxt/Downloads/tmp/poi/test97-2003.xls";
+//        		String path="/Users/cxt/Downloads/tmp/poi/test97-2003xlsx.xlsx";
+        String path="/Users/cxt/Downloads/tmp/poi/test97-2003.xls";
         ExcelResponseListener excelResponseListener = new ExcelResponseListener();
         ExcelReaderUtil.readExcel(path,excelResponseListener);
     }

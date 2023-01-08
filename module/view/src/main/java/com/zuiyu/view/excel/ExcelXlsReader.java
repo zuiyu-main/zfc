@@ -12,7 +12,8 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,8 +118,9 @@ public class ExcelXlsReader implements HSSFListener {
 	 * @throws Exception
 	 */
 	public int process(String fileName) throws Exception {
+		log.debug("process() fileName [{}]",fileName);
 		filePath = fileName;
-		this.fs = new POIFSFileSystem(new FileInputStream(fileName));
+		this.fs = new POIFSFileSystem(Files.newInputStream(Paths.get(fileName)));
 		MissingRecordAwareHSSFListener listener = new MissingRecordAwareHSSFListener(this);
 		formatListener = new FormatTrackingHSSFListener(listener);
 		HSSFEventFactory factory = new HSSFEventFactory();
@@ -299,7 +301,10 @@ public class ExcelXlsReader implements HSSFListener {
 							cellList.add(i, "");
 						}
 					}
+					log.debug("======读取[{}:{}]行数据开始 start ======",sheetName,curRow);
 					responseListener.result(ExcelReaderUtil.sendRows(filePath, sheetName, sheetIndex, curRow + 1, cellList,TITLE_MAP)); //每行结束时，调用sendRows()方法
+					log.debug("======读取[{}:{}]行数据结束 end ======",sheetName,curRow);
+
 					totalRows++;
 				}
 			}

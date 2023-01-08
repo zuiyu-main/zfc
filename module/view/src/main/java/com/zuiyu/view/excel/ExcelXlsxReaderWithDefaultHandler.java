@@ -163,12 +163,13 @@ public class ExcelXlsxReaderWithDefaultHandler extends DefaultHandler {
 	 * 遍历工作簿中所有的电子表格
 	 * 并缓存在mySheetList中
 	 *
-	 * @param filename
+	 * @param fileName
 	 * @throws Exception
 	 */
-	public int process(String filename) throws Exception {
-		filePath = filename;
-		OPCPackage pkg = OPCPackage.open(filename);
+	public int process(String fileName) throws Exception {
+		log.debug("process() fileName [{}]",fileName);
+		filePath = fileName;
+		OPCPackage pkg = OPCPackage.open(fileName);
 		XSSFReader xssfReader = new XSSFReader(pkg);
 		stylesTable = xssfReader.getStylesTable();
 		SharedStringsTable sst = xssfReader.getSharedStringsTable();
@@ -181,6 +182,7 @@ public class ExcelXlsxReaderWithDefaultHandler extends DefaultHandler {
 			sheetIndex++;
 			InputStream sheet = sheets.next(); //sheets.next()和sheets.getSheetName()不能换位置，否则sheetName报错
 			sheetName = sheets.getSheetName();
+			log.debug("当前处理 sheet [{}:{}]",sheetIndex,sheetName);
 			InputSource sheetSource = new InputSource(sheet);
 			parser.parse(sheetSource); //解析excel的每条记录，在这个过程中startElement()、characters()、endElement()这三个函数会依次执行
 			sheet.close();
@@ -334,7 +336,10 @@ public class ExcelXlsxReaderWithDefaultHandler extends DefaultHandler {
 				}
 				if (flag&&curRow!=1){ //该行不为空行且该行不是第一行，则发送（第一行为列名，不需要）
 
+					log.debug("======读取[{}:{}]行数据开始 start ======",sheetName,curRow);
 					responseListener.result(ExcelReaderUtil.sendRows(filePath, sheetName, sheetIndex, curRow, cellList,TITLE_MAP));
+					log.debug("======读取[{}:{}]行数据结束 end ======",sheetName,curRow);
+
 					totalRows++;
 				}
 

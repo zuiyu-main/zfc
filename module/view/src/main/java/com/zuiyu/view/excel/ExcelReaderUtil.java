@@ -2,8 +2,6 @@ package com.zuiyu.view.excel;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zuiyu.view.ResponseListener;
-import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
-import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,8 +47,11 @@ public class ExcelReaderUtil {
 		res.put("data",data);
 		return res;
 	}
-	public static void readExcel(String fileName, ResponseListener excelResponseListener) throws Exception {
+	public static void readExcel(String fileName,ResponseListener excelResponseListener) throws Exception {
 		int totalRows =0;
+		if (null == excelResponseListener){
+			excelResponseListener = new ExcelResponseListener();
+		}
 		if (fileName.endsWith(EXCEL03_EXTENSION)) { //处理excel2003文件
 			ExcelXlsReader excelXls=new ExcelXlsReader(excelResponseListener);
 			totalRows =excelXls.process(fileName);
@@ -90,7 +91,7 @@ public class ExcelReaderUtil {
 		} else {
 			throw new Exception("文件格式错误，fileName的扩展名只能是xls或xlsx。");
 		}
-		log.info("记录总数：[{}]",totalRows);
+		log.info("文件记录总数：[{}]",totalRows);
 	}
 
 	public static void copyToTemp(File file,String tmpDir) throws Exception{
