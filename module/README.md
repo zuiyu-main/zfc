@@ -21,8 +21,7 @@ module 所有的模块包
 https://releases.aspose.com/
 https://releases.aspose.com/java/repo
 
-修改签名参考
-https://blog.csdn.net/zcf980/article/details/123319484
+
 
 备忘录
 1、求合集（总的支持转换方式=各个转换方式的合并）
