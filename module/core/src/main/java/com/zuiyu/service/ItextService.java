@@ -37,10 +37,11 @@ public class ItextService implements BaseFileConvertService {
     @Override
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
         log.info("[{}] doc2pdf start ...",COMPONENT_NAME);
+        log.warn("{} doc2pdf 暂未支持，请关注后续版本!!!",COMPONENT_NAME);
     }
 
     @Override
-    public void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception {
+    public void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception {
 
     }
 }

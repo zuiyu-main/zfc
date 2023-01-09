@@ -7,7 +7,7 @@ import {nextTick} from 'vue'
 const service = axios.create({
   // baseURL 需要设置为反向代理前缀，不能设置绝对路径URL
   baseURL: config.baseUrl, 
-  timeout: 5000,
+  timeout: 30000,
   withCredentials: false, 
   headers: {'X-Custom-Header': 'zuiyu'}
 })

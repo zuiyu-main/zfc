@@ -1,6 +1,6 @@
 package com.zuiyu.service;
 
-import com.aspose.words.Document;
+import com.aspose.pdf.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
 import com.zuiyu.rest.action.FileHandlerEnum;
@@ -8,13 +8,9 @@ import com.zuiyu.rest.action.FileTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zuiyu
@@ -42,18 +38,22 @@ public class AsposeService implements BaseFileConvertService {
                         FileTypeEnum.HTML.name(),
                         FileTypeEnum.JSON.name()
                 ));
+                put(FileHandlerEnum.PDF2TEXT, Collections.singletonList(
+                        FileTypeEnum.PDF.name()
+                ));
 
             }};
 
     public static boolean getLicense() {
         boolean result = false;
         try {
-            InputStream is = AsposeService.class.getClassLoader().getResourceAsStream("aspose.xml"); // license.xml应放在..\WebRoot\WEB-INF\classes路径下
+            // TODO: 2023/1/9  aspose.xml 路径 resources/aspose.xml 【自行提供授权】
+            InputStream is = AsposeService.class.getClassLoader().getResourceAsStream("aspose.xml");
             License aposeLic = new License();
             aposeLic.setLicense(is);
             result = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("{} 签名获取异常:",COMPONENT_NAME,e);
         }
         return result;
     }
@@ -66,14 +66,13 @@ public class AsposeService implements BaseFileConvertService {
 
     @Override
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
-        log.info("[{}] doc2pdf start ...",COMPONENT_NAME);
+        log.info("[{}] doc2pdf() start ...",COMPONENT_NAME);
         if (!getLicense()) {
             return;
         }
-        File file = new File(targetFilePath);
-        try (FileOutputStream os = new FileOutputStream(file)) {
-            long start = System.currentTimeMillis();
-            Document doc = new Document(sourceFilePath);
+        long start = System.currentTimeMillis();
+        try (FileOutputStream os = new FileOutputStream(targetFilePath)) {
+            com.aspose.words.Document doc = new com.aspose.words.Document(sourceFilePath);
             doc.save(os, SaveFormat.PDF);
             log.info("Aspose WORD转PDF成功，耗时：{}{}", (System.currentTimeMillis() - start) / 1000, "s");
         } catch (Exception e) {
@@ -83,7 +82,20 @@ public class AsposeService implements BaseFileConvertService {
     }
 
     @Override
-    public void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception {
+    public void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception {
+        log.info("[{}] pdf2Text() start ...",COMPONENT_NAME);
+        if (!getLicense()) {
+            return;
+        }
+        long start = System.currentTimeMillis();
+        try (FileOutputStream os = new FileOutputStream(targetFilePath)) {
+            Document doc = new Document(sourceFilePath);
+            doc.save(os, com.aspose.pdf.SaveFormat.DocX);
+            log.info("{} pdf2Text 成功，耗时：{}{}",COMPONENT_NAME, (System.currentTimeMillis() - start) / 1000, "s");
+        } catch (Exception e) {
+            log.error("{} pdf2Text 失败：",COMPONENT_NAME, e);
+            throw e;
+        }
 
     }
 

@@ -13,22 +13,27 @@ public class RestRequest {
     /**
      * 待处理源文件
      */
-    private final File file;
+    final private File file;
     /**
      * 输出文件地址
      */
-    private final String targetFileDir;
+    final private String targetFileDir;
     /**
      * 转换文件方式
      * {@link com.zuiyu.rest.action.ConvertTypeEnum}
      */
-    private final String convertType;
+    final private String convertType;
+    /**
+     * 输出文件类型
+     */
+    final private String targetFileType;
 
 
-    public RestRequest(String targetFileDir, File file, String convertType) {
+    public RestRequest(String targetFileDir, File file, String convertType,String targetFileType) {
         this.file = file;
         this.targetFileDir = targetFileDir;
         this.convertType = convertType;
+        this.targetFileType = targetFileType;
     }
 
 
@@ -42,5 +47,9 @@ public class RestRequest {
 
     public String getConvertType() {
         return convertType;
+    }
+
+    public String getTargetFileType() {
+        return targetFileType;
     }
 }

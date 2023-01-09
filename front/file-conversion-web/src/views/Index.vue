@@ -9,7 +9,7 @@
                        @go-back="goBack"
           />
           <div v-else>
-            最方便的文件转换工具
+            最简洁的文件转换工具
 
           </div>
           <el-row style="justify-content: flex-end;">
@@ -67,9 +67,15 @@ const doc2pdfStatus = ref(false)
     let fd = new FormData()
     if (v === 'TEXT2PDF') {
       fd.append("type", "1")
+      convertPageData.setType("1")
+      convertPageData.setTargetFileType("pdf")
     } else if (v === 'PDF2DOC') {
-      return ".pdf"
+      fd.append("type", "2")
+      convertPageData.setType("2")
+      convertPageData.setTargetFileType("docx")
     } else {
+      convertPageData.setType("0")
+
       return ""
     }
   let result = await getSupportType(fd)

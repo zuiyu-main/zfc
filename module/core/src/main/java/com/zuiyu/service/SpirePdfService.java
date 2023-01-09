@@ -68,7 +68,7 @@ public class SpirePdfService implements BaseFileConvertService {
     }
 
     @Override
-    public void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception {
+    public void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception {
 
     }
 

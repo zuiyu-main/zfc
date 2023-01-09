@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineEmits, defineProps, getCurrentInstance, onMounted, ref} from 'vue'
+import {defineEmits, getCurrentInstance, onMounted, ref} from 'vue'
 import type {UploadProps} from 'element-plus'
 import {ElMessage, ElMessageBox, type UploadFile, type UploadFiles, type UploadRawFile} from 'element-plus'
 import {formUploadFile} from "@/api/api.js";
@@ -138,7 +138,8 @@ const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
 const uploadFile = async (fileReqOpt) => {
   let fd = new FormData()
   fd.append("file",fileReqOpt.file)
-  fd.append("type","1")
+  fd.append("type",convertPageData.type)
+  fd.append("targetFileType",convertPageData.targetFileType)
   fd.append("convertFileType",value.value===''?"Aspose":value.value)
   let result = await formUploadFile(fd)
   if (result.data.code === 500){

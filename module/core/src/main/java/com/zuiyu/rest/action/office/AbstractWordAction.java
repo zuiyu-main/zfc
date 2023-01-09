@@ -3,7 +3,6 @@ package com.zuiyu.rest.action.office;
 import com.zuiyu.rest.BaseRestHandler;
 import com.zuiyu.rest.RestRequest;
 import com.zuiyu.rest.action.ConvertTypeEnum;
-import com.zuiyu.rest.action.FileTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +47,7 @@ public abstract class AbstractWordAction extends BaseRestHandler {
         }
         String name = request.getFile().getName();
         String filename = name.substring(0, name.lastIndexOf("."));
-        String targetFileName = filename + "." + FileTypeEnum.PDF.name().toLowerCase(Locale.ROOT);
+        String targetFileName = filename + "." + request.getTargetFileType().toLowerCase(Locale.ROOT);
         sourceFileType = name.substring(name.lastIndexOf(".") + 1);
         if (request.getTargetFileDir().endsWith("/")) {
             targetFile = new File(outputPath + targetFileName);

@@ -3,6 +3,7 @@ package com.zuiyu.boot.factory;
 import com.zuiyu.rest.BaseRestHandler;
 import com.zuiyu.rest.RestHandler;
 import com.zuiyu.rest.action.FileHandlerEnum;
+import com.zuiyu.rest.action.office.Pdf2Text;
 import com.zuiyu.rest.action.office.Text2Pdf;
 import com.zuiyu.usage.UsageService;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class FileConvertFactory {
         initUsageService = new UsageService();
         // 加载所有的handler
         initUsageService.addRestHandler(new Text2Pdf());
+        initUsageService.addRestHandler(new Pdf2Text());
     }
     @PostConstruct
     public void postInit(){

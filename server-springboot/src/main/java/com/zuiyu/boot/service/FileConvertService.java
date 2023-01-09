@@ -39,7 +39,7 @@ public class FileConvertService {
         try {
             File file = ZFileUtils.mFile2File(mfile);
             BaseRestHandler restHandler = FileConvertFactory.buildRestHandler(params.getType());
-            RestRequest restRequest = new RestRequest(outputDir,file,params.getConvertFileType());
+            RestRequest restRequest = new RestRequest(outputDir,file,params.getConvertFileType(),params.getTargetFileType());
             DefaultRestChannel defaultRestChannel = new DefaultRestChannel(restRequest);
             restHandler.handleRequest(restRequest,defaultRestChannel);
             String filePath = defaultRestChannel.content;

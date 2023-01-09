@@ -1,6 +1,7 @@
 package com.zuiyu.service;
 
 import com.zuiyu.rest.action.FileHandlerEnum;
+import org.springframework.util.CollectionUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ public interface BaseFileConvertService {
 
     void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception;
 
-    void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception;
+    void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception;
 
     /**
      * 获取 支持 fileHandlerEnum 的所有转换方式的并集
@@ -33,12 +34,25 @@ public interface BaseFileConvertService {
         List<String> includeType4 = new SpirePdfService().getIncludeType(fileHandlerEnum);
 
         List<String> all = new LinkedList<>();
-        all.addAll(includeType1);
-        all.addAll(includeType2);
-        all.addAll(includeType3);
-        all.addAll(includeType4);
+        if (!CollectionUtils.isEmpty(includeType1)){
+            all.addAll(includeType1);
+        }
+        if (!CollectionUtils.isEmpty(includeType2)){
+            all.addAll(includeType2);
+        }
+        if (!CollectionUtils.isEmpty(includeType3)){
+            all.addAll(includeType3);
+        }
+        if (!CollectionUtils.isEmpty(includeType4)){
+            all.addAll(includeType4);
+        }
         return all.stream().distinct().collect(Collectors.toList());
     }
+    /**
+     * 转换方式总计数量
+     */
+    Integer DEFAULT_CONVERT_TYPE_SUM = 4;
+
 
 
 }

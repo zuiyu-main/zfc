@@ -18,7 +18,7 @@ public class TestMain {
     public static void main(String[] args) throws Exception {
         Text2Pdf text2Pdf = new Text2Pdf();
         RestRequest restRequest = new RestRequest("",
-                new File("/Users/cxt/Downloads/tmp/zfc/test-word2pdf.docx"), ConvertTypeEnum.ITEXT.name());
+                new File("/Users/cxt/Downloads/tmp/zfc/test-word2pdf.docx"), ConvertTypeEnum.ITEXT.name(),"pdf");
 
 
         DefaultRestChannel defaultRestChannel = new DefaultRestChannel(restRequest);

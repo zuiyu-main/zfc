@@ -59,8 +59,6 @@ public class PdfBoxService implements BaseFileConvertService {
         document.addPage(pdPage);
         PDPageContentStream contents = new PDPageContentStream(document, pdPage);
         contents.beginText();
-
-
         PDFont font = PDType1Font.HELVETICA_BOLD;
 //        ClassPathResource classPathResource = new ClassPathResource("fonts/方正仿宋_GBK.TTF");
 //        PDFont font1 = PDType0Font.load(document, classPathResource.getFile());
@@ -86,7 +84,7 @@ public class PdfBoxService implements BaseFileConvertService {
     }
 
     @Override
-    public void pdf2doc(String sourceFilePath, String targetFilePath) throws Exception {
+    public void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception {
 
     }
 }

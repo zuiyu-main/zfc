@@ -5,7 +5,6 @@ import com.zuiyu.rest.action.FileHandlerEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,28 +30,28 @@ public abstract class BaseRestHandler implements RestHandler {
      *
      * @return
      */
-    public abstract String getSourceFileType();
+//    public abstract String getSourceFileType();
 
     /**
      * 目标文件类型
      *
      * @return
      */
-    public abstract String getTargetFileType();
+//    public abstract String getTargetFileType();
 
     /**
      * 源文件
      *
      * @return
      */
-    public abstract File getSourceFile();
+//    public abstract File getSourceFile();
 
     /**
      * 目标文件
      *
      * @return
      */
-    public abstract File getTargetFile();
+//    public abstract File getTargetFile();
 
     /**
      * 获取支持的类型
@@ -75,15 +74,8 @@ public abstract class BaseRestHandler implements RestHandler {
     public final void handleRequest(RestRequest request, RestChannel channel) throws Exception {
         log.debug("handleRequest ======> info");
 //        // 验证参数、校验类型是否支持
-//        List<String> includeType = getIncludeType();
         String name = request.getFile().getName();
         String fileType = name.substring(name.lastIndexOf(".") + 1);
-//        boolean contains = includeType.contains(fileType.toUpperCase(Locale.ROOT));
-//        log.debug("文件类型校验 [{}] ", contains);
-//        if (!contains) {
-//            throw new IllegalArgumentException(String.format("文件类型不支持:%s", fileType));
-//        }
-
         ConvertTypeEnum baseFileConvertService;
         if (null == request.getConvertType() || request.getConvertType().length() == 0) {
             baseFileConvertService = getBaseFileConvertService(ConvertTypeEnum.ASPOSE.name());
@@ -115,7 +107,7 @@ public abstract class BaseRestHandler implements RestHandler {
                 return value;
             }
         }
-        return ConvertTypeEnum.ITEXT;
+        return ConvertTypeEnum.ASPOSE;
     }
 
     @FunctionalInterface

@@ -11,17 +11,21 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class ConvertFileParams {
     /**
-     * 待转换待文件
+     * 待转换文件
      */
     private MultipartFile file;
     /**
-     * 执行转换的类型
+     * 执行转换的类型,handle 路径
      */
     private FileHandlerEnum type;
     /**
      * 使用的转换方式
      */
     private String convertFileType;
+    /**
+     * 输出文件类型
+     */
+    private String targetFileType;
 
     public MultipartFile getFile() {
         return file;
@@ -45,5 +49,13 @@ public class ConvertFileParams {
 
     public void setConvertFileType(String convertFileType) {
         this.convertFileType = convertFileType;
+    }
+
+    public String getTargetFileType() {
+        return targetFileType;
+    }
+
+    public void setTargetFileType(String targetFileType) {
+        this.targetFileType = targetFileType;
     }
 }
