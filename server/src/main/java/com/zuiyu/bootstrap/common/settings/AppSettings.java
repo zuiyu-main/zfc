@@ -1,4 +1,4 @@
-package com.zuiyu.common.settings;
+package com.zuiyu.bootstrap.common.settings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +24,11 @@ public class AppSettings {
     public AppSettings(){
         try {
             Resource resource = new ClassPathResource("application.properties");
+
             Properties props = PropertiesLoaderUtils.loadProperties(resource);
             appName = props.getProperty("application.name");
-            host = props.getProperty("server.host");
-            port = Integer.valueOf(props.getProperty("server.port"));
+            host = props.getProperty("netty.server.host");
+            port = Integer.valueOf(props.getProperty("netty.server.port"));
             log.debug("{} 注册地址 {}:{}",appName,host,port);
         }catch (IOException e) {
             log.error("application.properties 读取失败：",e);
