@@ -53,6 +53,7 @@ public class AsposeService implements BaseFileConvertService {
             aposeLic.setLicense(is);
             result = true;
         } catch (Exception e) {
+            log.error("请检查【resources/aspose.xml】授权是否正确");
             log.error("{} 签名获取异常:",COMPONENT_NAME,e);
         }
         return result;
