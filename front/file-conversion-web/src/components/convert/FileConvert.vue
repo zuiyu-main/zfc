@@ -34,6 +34,7 @@
       </template>
     </el-upload>
 </div>
+
 </template>
 
 <script setup lang="ts">
@@ -163,4 +164,6 @@ const goBack = ()=>{
 .upload-demo{
   line-height:80px;
 }
+
+
 </style>

@@ -3,13 +3,24 @@
     <el-container >
       <el-aside class="aside" ><Menu @menu-click="menuClick"/></el-aside>
       <el-container>
-<!--        <el-header class="header">{{pageData.title}}</el-header>-->
+        <el-header class="header">
+          <el-popover
+              placement="top-start"
+              title="醉鱼Java"
+              width="200"
+              trigger="hover"
+              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+            <el-button slot="reference">醉鱼Java</el-button>
+          </el-popover>
+        </el-header>
         <el-main class="main">
           <FileConvert v-if="doc2pdfStatus"
                        @go-back="goBack"
           />
+
           <div v-else>
             最简洁的文件转换工具
+<!--            <BigFile/>-->
 
           </div>
           <el-row style="justify-content: flex-end;">
@@ -38,6 +49,7 @@
 <script setup lang="ts">
 import Menu from '@/components/Menu.vue'
 import FileConvert from '@/components/convert/FileConvert.vue'
+import BigFile from '@/components/convert/BigFile.vue'
 // ref 参数，reactive 表单
 import {ref} from 'vue'
 import {convertPageData} from '@/stores/fileConvert'
