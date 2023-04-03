@@ -10,12 +10,12 @@
         :accept="convertPageData.accept"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
-        :before-remove="beforeRemove"
         :on-exceed="handleExceed"
         :http-request="uploadFile"
         :on-error="handleError"
         :before-upload="beforeUpload"
     >
+      <!--        :before-remove="beforeRemove"-->
       <el-select v-model="value" clearable placeholder="请选择文件转换方式">
         <el-option
             v-for="item in options"
@@ -38,13 +38,12 @@
 </template>
 
 <script setup lang="ts">
-import {defineEmits, getCurrentInstance, onMounted, ref} from 'vue'
+import {type ComponentInternalInstance, defineEmits, getCurrentInstance, onMounted, ref} from 'vue'
 import type {UploadProps} from 'element-plus'
 import {ElMessage, ElMessageBox, type UploadFile, type UploadFiles, type UploadRawFile} from 'element-plus'
 import {formUploadFile} from "@/api/api.js";
 import {convertPageData} from '@/stores/fileConvert'
-
-// const {proxy} = getCurrentInstance()
+const {proxy} = getCurrentInstance() as ComponentInternalInstance
 // 定义转换方式
 const value = ref('')
 const options = [
@@ -95,7 +94,7 @@ const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
   // console.log('文件移除：',file, uploadFiles)
 }
 
-const handlePreview: UploadProps['onPreview'] = ([uploadFile]:any) => {
+const handlePreview: UploadProps['onPreview'] = (uploadFile:any) => {
   let fileUrl = uploadFile.raw.url
   if (fileUrl === undefined || fileUrl === ''){
     ElMessage.warning("文件转换失败，请删除重试！！！")
@@ -122,18 +121,18 @@ const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
 }
 const  beforeUpload: UploadProps['beforeUpload'] = (rawFile: UploadRawFile)=>{
 }
-const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
-  return ElMessageBox.confirm(
-      `请确认是否要删除文件： ${uploadFile.name} ?`,{
-    confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-  }
-  ).then(
-      () => true,
-      () => false
-  )
-}
+// const beforeRemove: UploadProps['beforeRemove'] = (uploadFile, uploadFiles) => {
+//   return ElMessageBox.confirm(
+//       `请确认是否要删除文件： ${uploadFile.name} ?`,{
+//     confirmButtonText: '确认',
+//         cancelButtonText: '取消',
+//         type: 'warning',
+//   }
+//   ).then(
+//       () => true,
+//       () => false
+//   )
+// }
 
 // 文件上传
 const uploadFile = async (fileReqOpt) => {
@@ -144,8 +143,10 @@ const uploadFile = async (fileReqOpt) => {
   fd.append("convertFileType",value.value===''?"Aspose":value.value)
   let result = await formUploadFile(fd)
   if (result.data.code === 500){
+    const fileUpload:any = proxy
+    fileUpload.$refs.upload.handleRemove(fileReqOpt.file)
+
     return
-    // proxy.$refs.upload.handleRemove(fileReqOpt.file)
   }
   fileReqOpt.file.url=result.data.data
   console.log("fileReqOpt",fileReqOpt)

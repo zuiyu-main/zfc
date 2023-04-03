@@ -18,6 +18,7 @@ service.defaults.headers.get['Content-Type']='application/x-www-form-urlencoded'
 let loadingInstance;
 service.interceptors.request.use(function (req) {
   loadingInstance = ElLoading.service({fullscreen:false,text:"正在加载..."})
+  console.log("请求地址",req)
   return req;
 }, function (error) {
   nextTick(() => {
