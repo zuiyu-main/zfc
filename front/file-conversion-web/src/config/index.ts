@@ -27,4 +27,15 @@ const prod: IConfig = {
   APPID: "17970",
   APPSECRET: "zuiyu"
 }
-export const config: IConfig = import.meta.env.MODE == 'development' ? dev : prod
+const boot: IConfig = {
+  env: "boot",
+  mock: false,
+  title: "boot 打包",
+  baseUrl: "",
+  baseApi: "http://127.0.0.1:8081",
+  APPID: "17970",
+  APPSECRET: "zuiyu"
+}
+const serverMode = import.meta.env.MODE
+export const config: IConfig =
+    serverMode === 'development' ? dev: import.meta.env.MODE == 'boot'?boot:prod

@@ -44,7 +44,7 @@ import {ElMessage, ElMessageBox, type UploadFile, type UploadFiles, type UploadR
 import {formUploadFile} from "@/api/api.js";
 import {convertPageData} from '@/stores/fileConvert'
 
-const {proxy} = getCurrentInstance()
+// const {proxy} = getCurrentInstance()
 // 定义转换方式
 const value = ref('')
 const options = [
@@ -95,7 +95,7 @@ const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
   // console.log('文件移除：',file, uploadFiles)
 }
 
-const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
+const handlePreview: UploadProps['onPreview'] = ([uploadFile]:any) => {
   let fileUrl = uploadFile.raw.url
   if (fileUrl === undefined || fileUrl === ''){
     ElMessage.warning("文件转换失败，请删除重试！！！")
@@ -149,7 +149,7 @@ const uploadFile = async (fileReqOpt) => {
   }
   fileReqOpt.file.url=result.data.data
   console.log("fileReqOpt",fileReqOpt)
-  let fl = convertPageData.fileList
+  let fl:any = convertPageData.fileList
   fl.push(fileReqOpt.file)
   convertPageData.setFileList(fl)
 

@@ -23,7 +23,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/dev/, '')
       },
       '^/prod': {
-        target: 'http://127.0.0.1:8081/',
+        target: 'http://192.168.123.166:8761/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/prod/, '')
       }

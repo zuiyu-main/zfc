@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only ",
+    "build-boot": "run-p type-check  build-only-boot",
     "preview": "vite preview --port 4173",
+    "build-only-boot": "vite build --mode boot",
     "build-only": "vite build --mode production",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
