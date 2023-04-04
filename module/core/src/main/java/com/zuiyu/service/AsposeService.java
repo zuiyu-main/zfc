@@ -38,7 +38,7 @@ public class AsposeService implements BaseFileConvertService {
                         FileTypeEnum.HTML.name(),
                         FileTypeEnum.JSON.name()
                 ));
-                put(FileHandlerEnum.PDF2TEXT, Collections.singletonList(
+                put(FileHandlerEnum.PDF2DOCX, Collections.singletonList(
                         FileTypeEnum.PDF.name()
                 ));
 
@@ -49,8 +49,8 @@ public class AsposeService implements BaseFileConvertService {
         try {
             // TODO: 2023/1/9  aspose.xml 路径 resources/aspose.xml 【自行提供授权】
             InputStream is = AsposeService.class.getClassLoader().getResourceAsStream("aspose.xml");
-            License aposeLic = new License();
-            aposeLic.setLicense(is);
+            License asposeLicense = new License();
+            asposeLicense.setLicense(is);
             result = true;
         } catch (Exception e) {
             log.error("请检查【resources/aspose.xml】授权是否正确");
@@ -83,7 +83,7 @@ public class AsposeService implements BaseFileConvertService {
     }
 
     @Override
-    public void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception {
+    public void pdf2Text(String sourceFilePath, String targetFilePath,String targetFileType) throws Exception {
         log.info("[{}] pdf2Text() start ...",COMPONENT_NAME);
         if (!getLicense()) {
             return;

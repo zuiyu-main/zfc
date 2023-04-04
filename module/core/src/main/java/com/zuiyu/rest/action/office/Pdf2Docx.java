@@ -19,19 +19,19 @@ import java.util.Random;
  * @description
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
-public class Pdf2Text extends AbstractWordAction{
+public class Pdf2Docx extends AbstractWordAction{
     public final Logger log = LoggerFactory.getLogger(getClass());
 
     public final List<String> include;
 
-    public Pdf2Text() {
+    public Pdf2Docx() {
         // 返回支持的输出类型
-        this.include = BaseFileConvertService.getSupportType(FileHandlerEnum.PDF2TEXT);
+        this.include = BaseFileConvertService.getSupportType(FileHandlerEnum.PDF2DOCX);
     }
 
     @Override
     public FileHandlerEnum getName() {
-        return FileHandlerEnum.PDF2TEXT;
+        return FileHandlerEnum.PDF2DOCX;
     }
 
 //    @Override
@@ -66,14 +66,14 @@ public class Pdf2Text extends AbstractWordAction{
         File file = request.getFile();
         convertTypeEnum
                 .getBaseFileConvertService()
-                .pdf2Text(file.getPath(), targetFile.getPath());
+                .pdf2Text(file.getPath(), targetFile.getPath(),request.getTargetFileType());
         File f = new File(targetFile.getPath());
         if (!f.exists()) {
             int index = new Random().nextInt(BaseFileConvertService.DEFAULT_CONVERT_TYPE_SUM);
             ConvertTypeEnum cte = ConvertTypeEnum.values()[index];
             log.warn("PDF2TEXT 失败，文件[{}]不存在,系统奖励一次随缘降级转换", targetFile.getPath());
             log.warn("PDF2TEXT 降级执行目标[{}=>{}]", convertTypeEnum.name(), cte.name());
-            cte.getBaseFileConvertService().pdf2Text(file.getPath(), targetFile.getPath());
+            cte.getBaseFileConvertService().pdf2Text(file.getPath(), targetFile.getPath(),request.getTargetFileType());
         }
         return channel -> channel.response(new TextRestResponse(RestStatus.OK, targetFile.getAbsolutePath()));
     }

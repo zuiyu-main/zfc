@@ -2,16 +2,15 @@ package com.zuiyu.service;
 
 
 import com.spire.doc.Document;
+import com.spire.pdf.FileFormat;
+import com.spire.pdf.PdfDocument;
 import com.zuiyu.rest.action.FileHandlerEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zuiyu
@@ -27,7 +26,9 @@ public class SpirePdfService implements BaseFileConvertService {
 
     private static final String COMPONENT_NAME = "Spire.pdf.free";
 
-
+    /**
+     * 具体操作支持的输入文件类型
+     */
     private static final Map<FileHandlerEnum, List<String>> INCLUDE_TYPE_MAP =
             new HashMap<FileHandlerEnum, List<String>>() {{
                 put(FileHandlerEnum.TEXT2PDF, Arrays.asList(
@@ -40,7 +41,9 @@ public class SpirePdfService implements BaseFileConvertService {
                         FileTypeEnum.HTML.name(),
                         FileTypeEnum.JSON.name()
                 ));
-
+                put(FileHandlerEnum.PDF2DOCX, Collections.singletonList(
+                        FileTypeEnum.PDF.name()
+                ));
             }};
 
 
@@ -49,7 +52,6 @@ public class SpirePdfService implements BaseFileConvertService {
         log.debug("[{}] getIncludeType by [{}]",COMPONENT_NAME,fileHandlerEnum.name());
         return INCLUDE_TYPE_MAP.get(fileHandlerEnum);
     }
-
     @Override
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
         log.info("[{}] doc2pdf start ...",COMPONENT_NAME);
@@ -68,8 +70,26 @@ public class SpirePdfService implements BaseFileConvertService {
     }
 
     @Override
-    public void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception {
+    public void pdf2Text(String sourceFilePath, String targetFilePath,String targetFileType) throws Exception {
+        log.info("[{}] pdf2Text start ...",COMPONENT_NAME);
 
+        try  {
+            long start = System.currentTimeMillis();
+            PdfDocument pdf = new PdfDocument();
+            pdf.loadFromFile(sourceFilePath);
+            FileFormat fileFormat = FileFormat.DOCX;
+            if (FileTypeEnum.HTML.name().equals(targetFileType)){
+                fileFormat = FileFormat.HTML;
+            }
+            if (FileTypeEnum.DOC.name().equals(targetFileType)){
+                fileFormat = FileFormat.DOC;
+            }
+            pdf.saveToFile(targetFilePath,fileFormat);
+            log.info("{} PDF2WORD 成功，耗时：{}{}", COMPONENT_NAME, (System.currentTimeMillis() - start) / 1000, "s");
+        } catch (Exception e) {
+            log.error("{} PDF2WORD 失败：", COMPONENT_NAME, e);
+            throw e;
+        }
     }
 
 

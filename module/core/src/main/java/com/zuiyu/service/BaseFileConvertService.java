@@ -15,12 +15,16 @@ import java.util.stream.Collectors;
  */
 public interface BaseFileConvertService {
 
-
+    /**
+     * 获取该操作支持的输入文件类型
+     * @param actionNameEnum
+     * @return
+     */
     List<String> getIncludeType(FileHandlerEnum actionNameEnum);
 
     void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception;
 
-    void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception;
+    void pdf2Text(String sourceFilePath, String targetFilePath,String targetFileType) throws Exception;
 
     /**
      * 获取 支持 fileHandlerEnum 的所有转换方式的并集

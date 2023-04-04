@@ -20,7 +20,7 @@ module 所有的模块包
 ## 参考连接
 https://releases.aspose.com/
 https://releases.aspose.com/java/repo
-
+https://www.e-iceblue.cn/content/pdf_java_conversion.html
 
 
 备忘录

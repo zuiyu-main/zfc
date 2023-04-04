@@ -7,7 +7,7 @@ package com.zuiyu.rest.action;
  * @link <a href="https://github.com/zuiyu-main">zuiyu GitHub</a>
  */
 public enum FileHandlerEnum implements BaseEnum{
-    TEXT2PDF(1),PDF2TEXT(2);
+    TEXT2PDF(1),PDF2DOCX(2);
 
     private final Integer value;
     FileHandlerEnum(Integer value) {

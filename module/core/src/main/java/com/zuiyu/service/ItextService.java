@@ -41,7 +41,7 @@ public class ItextService implements BaseFileConvertService {
     }
 
     @Override
-    public void pdf2Text(String sourceFilePath, String targetFilePath) throws Exception {
+    public void pdf2Text(String sourceFilePath, String targetFilePath,String targetFileType) throws Exception {
 
     }
 }

@@ -81,7 +81,7 @@ const doc2pdfStatus = ref(false)
       fd.append("type", "1")
       convertPageData.setType("1")
       convertPageData.setTargetFileType("pdf")
-    } else if (v === 'PDF2DOC') {
+    } else if (v === 'PDF2DOCX') {
       fd.append("type", "2")
       convertPageData.setType("2")
       convertPageData.setTargetFileType("docx")

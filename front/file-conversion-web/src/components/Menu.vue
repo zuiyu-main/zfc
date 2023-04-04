@@ -26,7 +26,7 @@
               <span>PDF转文本</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="2-1" @click="menuClick">PDF2DOC</el-menu-item>
+              <el-menu-item index="2-1" @click="menuClick">PDF2DOCX</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
         </el-menu>
@@ -66,7 +66,7 @@ const menuClick = (v) => {
   if(v.index==='1-1'){
     nv = "TEXT2PDF"
   }else {
-    nv = "PDF2DOC"
+    nv = "PDF2DOCX"
   }
   emit('menu-click',nv)
 }
