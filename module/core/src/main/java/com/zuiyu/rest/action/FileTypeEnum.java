@@ -19,6 +19,7 @@ public enum FileTypeEnum {
     RTF,
     HTML,
     HTM,
+    XLS,XLSX,
     /**
      * PDF 类型
      */

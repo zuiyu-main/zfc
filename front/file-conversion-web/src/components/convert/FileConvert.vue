@@ -145,12 +145,13 @@ const handleSuccess: UploadProps['onSuccess']=(response: any, uploadFile: Upload
 
   console.log("上传成功返回:",response,uploadFile,uploadFiles)
 }
-interface fileDetail {
+interface FileDetail {
   date: string
   name: string
   time: string
   result: string
   url: string
+  type: string
 }
 // 文件上传
 const uploadFile = async (fileReqOpt) => {
@@ -169,15 +170,15 @@ const uploadFile = async (fileReqOpt) => {
       // if you want to disable its autofocus
       autofocus: true,
       confirmButtonText: 'OK',
-      callback: (action: Action) => {
-        ElMessage({
-          type: 'info',
-          message: `action: ${action}`,
-        })
-      },
+      // callback: (action: Action) => {
+      //   ElMessage({
+      //     type: 'info',
+      //     message: `action: ${action}`,
+      //   })
+      // },
     })
-    let fl:any = convertPageData.fileList
-    const fileResult :fileDetail={
+    const fl:FileDetail[] = convertPageData.fileList
+    const fileResult :FileDetail={
       date: getCurrentTime(),
       name: fileReqOpt.file.name,
       time: '0',
@@ -191,9 +192,9 @@ const uploadFile = async (fileReqOpt) => {
 
     return
   }
-  const uploadResult:Object = result.data.data
-  let fl:any = convertPageData.fileList
-  const fileResult :fileDetail={
+  const uploadResult:FileDetail = result.data.data
+  let fl:FileDetail[] = convertPageData.fileList
+  const fileResult :FileDetail={
     date: uploadResult.date,
     name: uploadResult.name,
     time: uploadResult.time,

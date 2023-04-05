@@ -80,7 +80,7 @@ const handleEdit = (index: number, row: fileDetail) => {
   }
   window.open(fileUrl)
 }
-const handleDelete = (index: number, row: User) => {
+const handleDelete = (index: number, row: fileDetail) => {
   console.log(index, row)
 }
 const tableData: fileDetail[]=convertPageData.fileList
@@ -94,7 +94,7 @@ const tableRowClassName = ({
                              row,
                              rowIndex,
                            }: {
-  row: User
+  row: fileDetail
   rowIndex: number
 }) => {
   if (rowIndex === 1) {
