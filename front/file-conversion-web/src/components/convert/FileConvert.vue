@@ -36,26 +36,22 @@
       </template>
     </el-upload>
 
-    <el-table
-        :data="tableData"
-        style="width: 100%"
-        :row-class-name="tableRowClassName"
-    >
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column prop="address" label="Address" />
-    </el-table>
+    <ConvertResult/>
+
 </div>
 
 </template>
 
 <script setup lang="ts">
-import {type ComponentInternalInstance, defineEmits, getCurrentInstance, onMounted, ref} from 'vue'
+// import {type ComponentInternalInstance, defineEmits, getCurrentInstance, onMounted, ref} from 'vue'
+import { defineEmits, onMounted, ref} from 'vue'
 import type {UploadProps} from 'element-plus'
 import {ElMessage, ElMessageBox, type UploadFile, type UploadFiles, type UploadRawFile} from 'element-plus'
 import {formUploadFile} from "@/api/api.js";
+import getCurrentTime from "@/util/zdate.js";
 import {convertPageData} from '@/stores/fileConvert'
-const {proxy} = getCurrentInstance() as ComponentInternalInstance
+// const {proxy} = getCurrentInstance() as ComponentInternalInstance
+import ConvertResult from '@/components/result/ConvertResult.vue'
 // 定义转换方式
 const value = ref('')
 const options = [
@@ -149,6 +145,13 @@ const handleSuccess: UploadProps['onSuccess']=(response: any, uploadFile: Upload
 
   console.log("上传成功返回:",response,uploadFile,uploadFiles)
 }
+interface fileDetail {
+  date: string
+  name: string
+  time: string
+  result: string
+  url: string
+}
 // 文件上传
 const uploadFile = async (fileReqOpt) => {
   let fd = new FormData()
@@ -158,15 +161,47 @@ const uploadFile = async (fileReqOpt) => {
   fd.append("convertFileType",value.value===''?"Aspose":value.value)
   let result = await formUploadFile(fd)
   if (result.data.code === 500){
-    const fileUpload:any = proxy
-    fileUpload.$refs.upload.handleRemove(fileReqOpt.file)
+    // 调用组件ref删除文件默认列表 start
+    // const fileUpload:any = proxy
+    // fileUpload.$refs.upload.handleRemove(fileReqOpt.file)
+    // 调用组件ref删除文件默认列表 end
+    ElMessageBox.alert('转换失败', '转换结果', {
+      // if you want to disable its autofocus
+      autofocus: true,
+      confirmButtonText: 'OK',
+      callback: (action: Action) => {
+        ElMessage({
+          type: 'info',
+          message: `action: ${action}`,
+        })
+      },
+    })
+    let fl:any = convertPageData.fileList
+    const fileResult :fileDetail={
+      date: getCurrentTime(),
+      name: fileReqOpt.file.name,
+      time: '0',
+      result: '失败',
+      url: '',
+      type: value.value===''?"Aspose":value.value
+    }
+    console.log("错误结果打印",fileResult)
+    fl.push(fileResult)
+    convertPageData.setFileList(fl)
 
     return
   }
-  fileReqOpt.file.url=result.data.data
-  console.log("fileReqOpt",fileReqOpt)
+  const uploadResult:Object = result.data.data
   let fl:any = convertPageData.fileList
-  fl.push(fileReqOpt.file)
+  const fileResult :fileDetail={
+    date: uploadResult.date,
+    name: uploadResult.name,
+    time: uploadResult.time,
+    result: uploadResult.result,
+    url: uploadResult.url,
+    type: uploadResult.type
+  }
+  fl.push(fileResult)
   convertPageData.setFileList(fl)
 
 }
@@ -175,49 +210,6 @@ const goBack = ()=>{
   emit("go-back")
 }
 
-interface User {
-  date: string
-  name: string
-  address: string
-}
-
-const tableRowClassName = ({
-                             row,
-                             rowIndex,
-                           }: {
-  row: User
-  rowIndex: number
-}) => {
-  if (rowIndex === 1) {
-    return 'warning-row'
-  } else if (rowIndex === 3) {
-    return 'success-row'
-  }
-  return ''
-}
-
-const tableData: User[] = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
 </script>
 
 <style scoped>
@@ -225,10 +217,5 @@ const tableData: User[] = [
   line-height:80px;
 }
 
-.el-table .warning-row {
-  --el-table-tr-bg-color: var(--el-color-warning-light-9);
-}
-.el-table .success-row {
-  --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
+
 </style>

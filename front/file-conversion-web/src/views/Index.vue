@@ -49,13 +49,16 @@
 <script setup lang="ts">
 import Menu from '@/components/Menu.vue'
 import FileConvert from '@/components/convert/FileConvert.vue'
+import ZDateUtils from '@/util/zdate.js'
 import BigFile from '@/components/convert/BigFile.vue'
 // ref 参数，reactive 表单
 import {ref} from 'vue'
 import {convertPageData} from '@/stores/fileConvert'
 import {getSupportType} from "@/api/api.js";
+import getCurrentTime from "@/util/zdate.js";
 
-const currentDate = ref(new Date())
+// const currentDate = ref(new Date())
+const currentDate= getCurrentTime()
 const doc2pdfStatus = ref(false)
 
 
