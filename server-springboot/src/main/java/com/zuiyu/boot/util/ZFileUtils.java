@@ -47,6 +47,9 @@ public class ZFileUtils implements DisposableBean, InitializingBean {
     public static File mFile2File(MultipartFile mfile) throws IOException {
         String originalFilename = mfile.getOriginalFilename();
         File file = new File(FILE_PATH+originalFilename);
+        if (file.exists()){
+            file.delete();
+        }
         mfile.transferTo(file);
         return file;
     }

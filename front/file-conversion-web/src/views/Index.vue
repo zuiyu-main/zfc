@@ -3,16 +3,16 @@
     <el-container >
       <el-aside class="aside" ><Menu @menu-click="menuClick"/></el-aside>
       <el-container>
-        <el-header class="header">
-          <el-popover
-              placement="top-start"
-              title="醉鱼Java"
-              width="200"
-              trigger="hover"
-              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-            <el-button slot="reference">醉鱼Java</el-button>
-          </el-popover>
-        </el-header>
+<!--        <el-header class="header">-->
+<!--          <el-popover-->
+<!--              placement="top-start"-->
+<!--              title="醉鱼Java"-->
+<!--              width="200"-->
+<!--              trigger="hover"-->
+<!--              content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">-->
+<!--            <el-button slot="reference">醉鱼Java</el-button>-->
+<!--          </el-popover>-->
+<!--        </el-header>-->
         <el-main class="main">
           <FileConvert v-if="doc2pdfStatus"
                        @go-back="goBack"
