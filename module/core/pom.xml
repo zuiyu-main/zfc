@@ -65,7 +65,7 @@
         <dependency>
             <groupId>e-iceblue</groupId>
             <artifactId>spire.doc.free</artifactId>
-            <version>5.2.0</version>
+            <version>5.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
@@ -78,30 +78,56 @@
             <version>5.3.20</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+
     </dependencies>
     <repositories>
-<!--        <repository>-->
-<!--            <id>com.e-iceblue</id>-->
-<!--            <name>e-iceblue</name>-->
-<!--            <url>https://repo.e-iceblue.cn/repository/maven-public/</url>-->
-<!--        </repository>-->
-<!--            <repository>-->
-<!--                <id>AsposeJavaAPI</id>-->
-<!--                <name>Aspose Java API</name>-->
-<!--                <url>https://releases.aspose.com/java/repo</url>-->
-<!--            </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun-repos</id>-->
-<!--            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>AsposeJavaAPI</id>-->
-<!--            <name>Aspose Java API</name>-->
-<!--            <url>http://repository.aspose.com/repo/</url>-->
-<!--        </repository>-->
+            <repository>
+                <id>com.e-iceblue</id>
+                <name>e-iceblue</name>
+                <url>https://repo.e-iceblue.cn/repository/maven-public/</url>
+            </repository>
+            <repository>
+                <id>AsposeJavaAPI</id>
+                <name>Aspose Java API</name>
+                <url>https://releases.aspose.com/java/repo</url>
+            </repository>
+        <repository>
+            <id>aliyun-repos</id>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>AsposeJavaAPI</id>
+            <name>Aspose Java API</name>
+            <url>http://repository.aspose.com/repo/</url>
+        </repository>
     </repositories>
     <build>
         <finalName>core</finalName>

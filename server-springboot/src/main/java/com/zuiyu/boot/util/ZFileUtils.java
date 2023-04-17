@@ -49,6 +49,7 @@ public class ZFileUtils implements DisposableBean, InitializingBean {
         File file = new File(FILE_PATH+originalFilename);
         if (file.exists()){
             file.delete();
+            file.createNewFile();
         }
         mfile.transferTo(file);
         return file;

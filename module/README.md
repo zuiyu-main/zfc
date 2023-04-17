@@ -34,3 +34,33 @@ A(RestHandler) --> B(BaseRestHandler)
 B(BaseRestHandler) --> C(AbstractWordAction)
 C(AbstractWordAction) --> D(Word2Pdf)
 ```
+
+# 扩展
+## 扩展转换方式
+1、实现 BaseFileConvertService 接口
+2、实现对应的接口
+3、修改支持的类型，如下所示
+```text
+    private static final Map<FileHandlerEnum, List<String>> INCLUDE_TYPE_MAP =
+            new HashMap<FileHandlerEnum, List<String>>() {{
+                put(FileHandlerEnum.TEXT2PDF, Arrays.asList(
+                        FileTypeEnum.DOC.name(),
+                        FileTypeEnum.DOCX.name(),
+                        FileTypeEnum.TXT.name(),
+
+                        FileTypeEnum.RTF.name(),
+                        FileTypeEnum.HTM.name(),
+                        FileTypeEnum.HTML.name(),
+                        FileTypeEnum.JSON.name()
+                ));
+                put(FileHandlerEnum.PDF2DOCX, Collections.singletonList(
+                        FileTypeEnum.PDF.name()
+                ));
+            }};
+```
+
+
+# 问题记录
+1、 The document is really a OOXML file
+
+如果您的 Word 文档是 OOXML 格式（即以 .docx 或 .xlsx 等扩展名结尾的文档），则需要使用 Apache POI 来读取其中的内容。
