@@ -1,17 +1,20 @@
 package com.zuiyu.service;
 
-import com.itextpdf.text.*;
-
-import com.itextpdf.text.pdf.PdfCopy;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.layout.property.VerticalAlignment;
 import com.zuiyu.rest.action.FileHandlerEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
-import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.usermodel.Range;
-//import org.apache.poi.hwpf.usermodel.Paragraph;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,94 +53,89 @@ public class ItextService implements BaseFileConvertService {
     public void doc2pdf(String sourceFilePath, String targetFilePath) throws Exception {
         log.info("[{}] doc2pdf start ...",COMPONENT_NAME);
 //        log.warn("{} doc2pdf 暂未支持，请关注后续版本!!!",COMPONENT_NAME);
-        convertWordToPdf2(sourceFilePath,targetFilePath);
+        convertWordToPdfWith97_2003(sourceFilePath,targetFilePath);
     }
-    public static void convertWordToPdf2(String inputFile, String outputFile) {
+    public static void convertWordToPdfWith97_2003(String inputFile, String outputFile) {
 
-        try (FileInputStream fis = new FileInputStream(new File(inputFile));
-             XWPFDocument document = new XWPFDocument(fis)) {
-            // Initialize PDF document
-            Document pdfDoc = new Document();
-            PdfWriter.getInstance(pdfDoc, new FileOutputStream(outputFile));
-            pdfDoc.open();
-            // 遍历文档中的段落
-            for (XWPFParagraph para : document.getParagraphs()) {
-                String text = para.getText();
-                // Add text to PDF document
-                pdfDoc.add(new Paragraph(text));
-            }
-            // Close PDF document
-            pdfDoc.close();
-        } catch (IOException | DocumentException e) {
-            log.error("{} WORD2PDF 失败：", COMPONENT_NAME, e);
 
-        }
     }
-    public static void convertWordToPdf(String inputFile, String outputFile) {
-        try {
-            // Load input Word document
-            InputStream input = new FileInputStream(new File(inputFile));
-            HWPFDocument wordDoc = new HWPFDocument(input);
 
-            // Get paragraphs from Word document
-            Range range = wordDoc.getRange();
-
-            int numParagraphs = range.numParagraphs();
-
-            List<org.apache.poi.hwpf.usermodel.Paragraph> paragraphs = new LinkedList<>();
-
-
-            // Initialize PDF document
-            Document pdfDoc = new Document(PageSize.A4);
-            PdfWriter writer = PdfWriter.getInstance(pdfDoc, new FileOutputStream(outputFile));
-            pdfDoc.open();
-
-            // Initialize PDF copy
-            PdfCopy copy = new PdfCopy(pdfDoc, new FileOutputStream(outputFile));
-            copy.open();
-            int currentPageNumber = 1;
-
-            // Process paragraphs in chunks of 10
-            for (int i = 0; i < numParagraphs; i++) {
-                org.apache.poi.hwpf.usermodel.Paragraph paragraph = range.getParagraph(i);
-                paragraphs.add(paragraph);
-            }
-            for (int i = 0; i < paragraphs.size(); i += 10) {
-                // Create PDF chunk containing 10 paragraphs
-                int endIndex = Math.min(i + 10, paragraphs.size());
-                StringBuilder sb = new StringBuilder();
-                for (int j = i; j < endIndex; j++) {
-                    String text = ((Range)paragraphs.get(j)).text().trim();
-                    sb.append(text);
-                    sb.append("\n\n");
+    public static void main(String[] args) throws Exception {
+        // 定义Word文件路径和PDF文件路径
+        String docPath = "example.docx";
+        String pdfPath = "example.pdf";
+        // 初始化PDF文档
+        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(new FileOutputStream(pdfPath)));
+        Document doc = new Document(pdfDoc);
+        // 使用Apache POI解析Word文档
+        FileInputStream fis = new FileInputStream(new File(docPath));
+        XWPFDocument document = new XWPFDocument(fis);
+        // 遍历Word文档中的所有段落
+        for (XWPFParagraph para : document.getParagraphs()) {
+            // 创建新的段落
+            Paragraph pdfPara = new Paragraph(para.getText());
+            // 设置段落样式
+            if (para.getAlignment() != null) {
+                if (HorizontalAlignment.CENTER.equals(para.getAlignment())) {
+                    pdfPara.setTextAlignment(TextAlignment.CENTER);
+                } else if (HorizontalAlignment.RIGHT.equals(para.getAlignment())) {
+                    pdfPara.setTextAlignment(TextAlignment.RIGHT);
                 }
-                // 设置字体样式
-                Font font = new Font(Font.getFamily("Helvetica"), 16, Font.BOLD);
-                Paragraph chunk = new Paragraph(sb.toString(),font);
-                chunk.setAlignment(Element.ALIGN_JUSTIFIED);
-
-                // Add chunk to current PDF page
-                pdfDoc.add(chunk);
-
-                // Add current PDF page to PDF copy
-                PdfReader reader = new PdfReader(writer.getDirectContent().toPdf(null));
-                copy.addPage(copy.getImportedPage(reader, currentPageNumber));
-
-                // Increment current page number
-                currentPageNumber++;
             }
-
-            // Close PDF copy, PDF writer, and PDF document
-            copy.close();
-            writer.close();
-            pdfDoc.close();
-
-            // Close input stream
-            input.close();
+            // 将段落添加到PDF文档中
+            doc.add(pdfPara);
         }
-        catch (Exception e) {
-            log.error("{} WORD2PDF 失败：", COMPONENT_NAME, e);
+        // 遍历Word文档中的所有表格
+        for (XWPFTable tbl : document.getTables()) {
+            // 获取表格的行数和列数
+            int rows = tbl.getNumberOfRows();
+            int cols = tbl.getRow(0).getTableCells().size();
+            // 创建新的表格
+            Table pdfTbl = new Table(UnitValue.createPercentArray(new float[cols])).useAllAvailableWidth();
+            // 遍历表格中的所有单元格
+            for (int i = 0; i < rows; i++) {
+                XWPFTableRow row = tbl.getRow(i);
+                for (int j = 0; j < cols; j++) {
+                    XWPFTableCell cell = row.getCell(j);
+                    // 创建新的单元格
+                    Paragraph content = new Paragraph(cell.getText());
+                    // 设置单元格样式
+                    content.setHorizontalAlignment(HorizontalAlignment.CENTER);
+                    content.setVerticalAlignment(VerticalAlignment.MIDDLE);
+                    // 将单元格添加到表格中
+                    pdfTbl.addCell(content);
+                }
+            }
+            // 将表格添加到PDF文档中
+            doc.add(pdfTbl);
         }
+        // 遍历Word文档中的所有图片
+        for (XWPFParagraph para : document.getParagraphs()) {
+            for (XWPFRun run : para.getRuns()) {
+                // 判断是否为图片
+                if (run.getEmbeddedPictures().size() > 0) {
+                    for (XWPFPicture pic : run.getEmbeddedPictures()) {
+                        // 获取图片数据和格式
+                        byte[] data = pic.getPictureData().getData();
+                        String contentType = pic.getPictureData().getPackagePart().getContentType();
+                        String picDesc = pic.getDescription();
+                        // 设置图片描述信息
+                        // 创建新的图片
+                        ImageData imageData = ImageDataFactory.create(data);
+                        Image pdfImg = new Image(imageData);
+                        pdfImg.getAccessibilityProperties().setAlternateDescription(picDesc);
+
+                        // 将图片添加到PDF文档中
+                        doc.add(pdfImg);
+                    }
+                }
+            }
+        }
+
+        // 关闭PDF文档和输入流
+        doc.close();
+        pdfDoc.close();
+        fis.close();
     }
 
     @Override
