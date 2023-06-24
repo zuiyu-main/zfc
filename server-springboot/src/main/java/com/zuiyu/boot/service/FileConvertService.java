@@ -3,6 +3,7 @@ package com.zuiyu.boot.service;
 import com.zuiyu.boot.exception.ConvertException;
 import com.zuiyu.boot.factory.FileConvertFactory;
 import com.zuiyu.boot.model.ConvertFileParams;
+import com.zuiyu.boot.model.FileResultDTO;
 import com.zuiyu.boot.util.ZFileUtils;
 import com.zuiyu.rest.BaseRestHandler;
 import com.zuiyu.rest.RestRequest;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -33,7 +35,7 @@ public class FileConvertService {
     private String outputDir;
     @Value("${file.output.host}")
     private String outputFileHost;
-    public String fileConvert(ConvertFileParams params) throws Exception {
+    public FileResultDTO fileConvert(ConvertFileParams params) throws Exception {
         logger.info("文件转换前准备资源,操作类型 [{}]",params.getType().name());
         MultipartFile mfile = params.getFile();
         try {
@@ -42,19 +44,22 @@ public class FileConvertService {
             RestRequest restRequest = new RestRequest(outputDir,file,params.getConvertFileType(),params.getTargetFileType());
             DefaultRestChannel defaultRestChannel = new DefaultRestChannel(restRequest);
             restHandler.handleRequest(restRequest,defaultRestChannel);
-            String filePath = defaultRestChannel.content;
-            File f= new File(filePath);
-            if (!f.exists()){
-                throw new ConvertException("文件转换失败，请使用其它方式重试");
-            }
             return buildResponse(defaultRestChannel.content);
         }catch (Exception e){
             logger.error("文件转换失败:",e);
             throw e;
         }
     }
-    public String buildResponse(String content){
-        return outputFileHost+content;
+    public FileResultDTO buildResponse(String content){
+        File f= new File(content);
+        if (!f.exists()){
+            throw new ConvertException("文件转换失败，请使用其它方式重试");
+        }
+        FileResultDTO resultDTO = new FileResultDTO();
+        resultDTO.setUrl(outputFileHost+content);
+        resultDTO.setSize1(f.length()/1024);
+        resultDTO.setResult(f.length()<=0?"失败":"成功");
+        return resultDTO;
     }
 
     public List<String> getSupportType(ConvertFileParams params) {

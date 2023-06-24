@@ -1,6 +1,7 @@
 package com.zuiyu.boot.controller;
 
 import com.zuiyu.boot.model.ConvertFileParams;
+import com.zuiyu.boot.model.FileResultDTO;
 import com.zuiyu.boot.service.FileConvertService;
 import com.zuiyu.boot.util.ZDateUtils;
 import com.zuiyu.response.HttpResponse;
@@ -37,18 +38,17 @@ public class ConvertController {
      * @throws Exception
      */
     @PostMapping(value = "/file")
-    public HttpResponse<Map<String,String>> file( ConvertFileParams params) throws Exception {
-        Map<String,String> result = new HashMap<>(16);
-        result.put("date", ZDateUtils.LocalDateTime2String(LocalDateTime.now()));
+    public HttpResponse<FileResultDTO> file( ConvertFileParams params) throws Exception {
+        String startTime = ZDateUtils.LocalDateTime2String(LocalDateTime.now());
         long start = System.currentTimeMillis();
-        String url = fileConvertService.fileConvert(params);
+        FileResultDTO dto = fileConvertService.fileConvert(params);
+        dto.setDate(startTime);
+        dto.setName(params.getFile().getOriginalFilename());
         long time = (System.currentTimeMillis()-start)/1000;
-        result.put("url",url);
-        result.put("name",params.getFile().getOriginalFilename());
-        result.put("time",time+"s");
-        result.put("result", StringUtils.isEmpty(url)?"失败":"成功");
-        result.put("type",params.getConvertFileType());
-        return new HttpResponse<>(result);
+        dto.setTime(time+"s");
+        dto.setType(params.getConvertFileType());
+        dto.setSize0(params.getFile().getSize()/1024);
+        return new HttpResponse<>(dto);
     }
 
     @PostMapping(value = "/getSupportType")

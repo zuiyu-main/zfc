@@ -1,7 +1,9 @@
 package com.zuiyu.service;
 
-import com.aspose.pdf.Document;
+import com.aspose.pdf.*;
+import com.aspose.words.DocumentBuilder;
 import com.aspose.words.License;
+import com.aspose.words.ParagraphAlignment;
 import com.aspose.words.SaveFormat;
 import com.zuiyu.rest.action.FileHandlerEnum;
 import com.zuiyu.rest.action.FileTypeEnum;
@@ -88,16 +90,48 @@ public class AsposeService implements BaseFileConvertService {
         if (!getLicense()) {
             return;
         }
-        long start = System.currentTimeMillis();
-        try (FileOutputStream os = new FileOutputStream(targetFilePath)) {
-            Document doc = new Document(sourceFilePath);
-            doc.save(os, com.aspose.pdf.SaveFormat.DocX);
-            log.info("{} pdf2Text 成功，耗时：{}{}",COMPONENT_NAME, (System.currentTimeMillis() - start) / 1000, "s");
-        } catch (Exception e) {
-            log.error("{} pdf2Text 失败：",COMPONENT_NAME, e);
-            throw e;
+//        long start = System.currentTimeMillis();
+//        try (FileOutputStream os = new FileOutputStream(targetFilePath)) {
+//            Document doc = new Document(sourceFilePath);
+//            doc.save(os, com.aspose.pdf.SaveFormat.DocX);
+//            log.info("{} pdf2Text 成功，耗时：{}{}",COMPONENT_NAME, (System.currentTimeMillis() - start) / 1000, "s");
+//        } catch (Exception e) {
+//            log.error("{} pdf2Text 失败：",COMPONENT_NAME, e);
+//            throw e;
+//        }
+// 1. 转换PDF为文本
+        Document pdfDocument = new Document(sourceFilePath);
+        TextAbsorber textAbsorber = new TextAbsorber();
+//            pdfDocument.getPages().accept(textAbsorber);
+        PageCollection pages = pdfDocument.getPages();
+        DocumentInfo info = pdfDocument.getInfo();
+        String subject = info.getSubject();
+        for (int i = 0; i < pages.size(); i++) {
+
+            Page item = pages.get_Item(i);
+            item.accept(textAbsorber);
+        }
+        String text = textAbsorber.getText();
+
+        // 2. 写入docx文件
+        com.aspose.words.Document docxDocument = new com.aspose.words.Document();
+        DocumentBuilder builder = new DocumentBuilder(docxDocument);
+        builder.getPageSetup().setLeftMargin(72.0);
+        builder.getPageSetup().setRightMargin(72.0);
+        builder.getPageSetup().setTopMargin(72.0);
+        builder.getPageSetup().setBottomMargin(72.0);
+        builder.getParagraphFormat().setAlignment(ParagraphAlignment.LEFT);
+
+        String[] paragraphs = text.split("\\r?\\n\\r?\\n");
+        for (String paragraph : paragraphs) {
+            builder.writeln(paragraph);
         }
 
+        FileOutputStream out = new FileOutputStream(targetFilePath);
+        docxDocument.save(out, com.aspose.words.SaveFormat.DOCX);
+        out.close();
+
+        pdfDocument.close();
     }
 
 
